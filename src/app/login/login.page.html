@@ -1,10 +1,13 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
-    <ion-title>Login</ion-title>
+    <!--<ion-title>Login</ion-title>-->
   </ion-toolbar>
 </ion-header>
 
 <ion-content [fullscreen]="true" class="ion-padding">
+  <div class="login-title">
+    Inicia Sesión
+  </div>
   <form [formGroup]="loginForm" (ngSubmit)="onLogin()">
     
     <ion-item *ngIf="!isAdmin">
@@ -25,7 +28,7 @@
     </ng-container>
 
     <ion-button expand="full" type="submit" class="ion-margin-top">
-      Iniciar Sesión
+      Acceder
     </ion-button>
      <ion-button fill="clear" expand="full" (click)="toggleMode()">
     {{ isAdmin ? 'Soy Empleado' : 'Soy Administrador' }}

@@ -58,4 +58,32 @@ export class Auth {
     localStorage.removeItem('user');
     localStorage.removeItem('empleado');
   }
+
+  createEmpleado(data: { nombre: string; apellidos: string; edad: number; telefono: string }): Observable<any> {
+    return this.http.post<any>(`${this.apiUrl}create-empleado.php`, data).pipe(
+      map(res => res),
+      catchError(err => throwError(() => new Error(err.error?.error || err.message || 'Error al crear empleado')))
+    );
+  }
+
+  getEmpleados(): Observable<any[]> {
+    return this.http.get<any>(`${this.apiUrl}read-empleados.php`).pipe(
+      map(res => res.empleados || []),
+      catchError(err => throwError(() => new Error(err.error?.error || err.message || 'Error al obtener empleados')))
+    );
+  }
+
+  updateEmpleado(data: { id: number; nombre: string; apellidos: string; edad: number; telefono: string }): Observable<any> {
+    return this.http.put<any>(`${this.apiUrl}update-empleado.php`, data).pipe(
+      map(res => res),
+      catchError(err => throwError(() => new Error(err.error?.error || err.message || 'Error al actualizar empleado')))
+    );
+  }
+
+  deleteEmpleado(id: number): Observable<any> {
+    return this.http.request<any>('DELETE', `${this.apiUrl}delete-empleado.php`, { body: { id } }).pipe(
+      map(res => res),
+      catchError(err => throwError(() => new Error(err.error?.error || err.message || 'Error al eliminar empleado')))
+    );
+  }
 }
