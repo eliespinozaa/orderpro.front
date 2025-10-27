@@ -86,4 +86,62 @@ export class Auth {
       catchError(err => throwError(() => new Error(err.error?.error || err.message || 'Error al eliminar empleado')))
     );
   }
+
+ getProductos(): Observable<any[]> {
+  return this.http.get<any[]>(`${this.apiUrl}productos.php`).pipe(
+    map((response: any[]) => 
+      response.map(p => ({
+        id: p.id,
+        nombre: p.nombre,
+        precio: Number(p.precio),
+        unidad_medida: p.unidad_medida,
+        tamano: p.tamaño
+      }))
+    ),
+    catchError(err => throwError(() => new Error(err.message || 'Error al obtener productos')))
+  );
+}
+
+
+editarProducto(producto: any): Observable<any> {
+  return this.http.post<any>(`${this.apiUrl}editar-producto.php`, producto).pipe(
+    map(response => {
+      if (response.success) {
+        return response;
+      } else {
+        throw new Error(response.error || 'Error al editar producto');
+      }
+    }),
+    catchError(err => throwError(() => new Error(err.error?.error || err.message || 'Error desconocido')))
+  );
+}
+// dentro de Auth
+eliminarProducto(id: number): Observable<any> {
+  return this.http.post<any>(`${this.apiUrl}eliminar-producto.php`, { id }).pipe(
+    map(response => {
+      if (response.success) {
+        return response;
+      } else {
+        throw new Error(response.error || 'No se pudo eliminar el producto');
+      }
+    }),
+    catchError(err => throwError(() => new Error(err.error?.error || err.message || 'Error desconocido')))
+  );
+}
+agregarProducto(producto: any): Observable<any> {
+  return this.http.post<any>(`${this.apiUrl}agregar-producto.php`, producto).pipe(
+    map(response => {
+      if (response.success) {
+        return response;
+      } else {
+        throw new Error(response.error || 'No se pudo agregar el producto');
+      }
+    }),
+    catchError(err => throwError(() => new Error(err.error?.error || err.message || 'Error desconocido')))
+  );
+}
+
+
+
+
 }

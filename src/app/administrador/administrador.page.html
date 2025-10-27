@@ -1,13 +1,145 @@
-<ion-header [translucent]="true">
-  <ion-toolbar>
-    <ion-title>administrador</ion-title>
-  </ion-toolbar>
-</ion-header>
+<ion-content class="ion-padding custom-background">
 
-<ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">administrador</ion-title>
-    </ion-toolbar>
-  </ion-header>
+  <div class="header-container">
+    <div class="logo-icon-container">
+      <ion-icon name="restaurant-outline" class="logo-icon"></ion-icon>
+    </div>
+    <div class="title-text-container">
+      <h1 class="title-order">ORDER</h1>
+      <h1 class="title-pro">PRO</h1>
+    </div>
+  </div>
+
+  <div class="nav-menu">
+    <span class="nav-item" [class.active-nav]="seccionActiva==='productos'" (click)="seleccionarSeccion('productos')">Productos</span>
+    <span class="nav-item" [class.active-nav]="seccionActiva==='empleados'" (click)="seleccionarSeccion('empleados')">Empleados</span>
+    <span class="nav-item" [class.active-nav]="seccionActiva==='salir'" (click)="seleccionarSeccion('salir')">Salir</span>
+  </div>
+
+  <!-- ========================= SECCIÓN PRODUCTOS ========================= -->
+  <div *ngIf="seccionActiva==='productos'">
+
+    <div *ngIf="editandoProducto" class="form-card">
+      <h2 class="form-title">{{ productoSeleccionado?.id ? 'Editar' : 'Agregar' }}</h2>
+      <div class="form-grid">
+        <div class="form-field">
+          <p class="field-label">Nombre</p>
+          <ion-input type="text" class="custom-input" [(ngModel)]="productoSeleccionado.nombre"></ion-input>
+        </div>
+        <div class="form-field">
+          <p class="field-label">Precio</p>
+          <ion-input type="number" class="custom-input" [(ngModel)]="productoSeleccionado.precio"></ion-input>
+        </div>
+        <div class="form-field">
+          <p class="field-label">Unidad de medida</p>
+          <ion-input type="text" class="custom-input" [(ngModel)]="productoSeleccionado.unidad_medida"></ion-input>
+        </div>
+        <div class="form-field">
+          <p class="field-label">Tamaño</p>
+          <ion-input type="text" class="custom-input" [(ngModel)]="productoSeleccionado.tamano"></ion-input>
+        </div>
+      </div>
+      <div class="button-group">
+        <ion-button fill="clear" class="cancel-button"  (click)="cancelarEdicionProducto()">Cancelar</ion-button>
+        <ion-button (click)="guardarProducto()" class="save-button" >{{ productoSeleccionado?.id ? 'Actualizar' : 'Guardar' }}</ion-button>
+      </div>
+    </div>
+
+      <div class="form-container" *ngIf="!editandoProducto">
+        <p class="input-label">Producto</p>
+        <div class="input-button-group">
+          <ion-input class="product-input" placeholder="Nombre del producto" [(ngModel)]="nuevoProducto.nombre"></ion-input>
+          <ion-button class="add-button" shape="round" (click)="nuevoProductoUI()">         
+            <ion-icon class="pi pi-plus-circle"></ion-icon>Agregar</ion-button>
+        </div>
+      </div>
+    <div *ngIf="!editandoProducto" class="table-container">
+     
+      <table>
+        <thead>
+          <tr>
+            <th>Nombre</th>
+            <th>Precio</th>
+            <th>Und. Medida</th>
+            <th>Tamaño</th>
+            <th>Acciones</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let p of productos">
+            <td>{{ p.nombre }}</td>
+            <td>{{ p.precio | currency:'MXN' }}</td>
+            <td>{{ p.unidad_medida }}</td>
+            <td>{{ p.tamano }}</td>
+            <td class="action-icons">
+              <i class="pi pi-pencil edit-icon" (click)="editarProductoUI(p)"></i>
+              <i class="pi pi-trash delete-icon" (click)="eliminarProducto(p.id)"></i>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- ========================= SECCIÓN EMPLEADOS ========================= -->
+  <div *ngIf="seccionActiva==='empleados'">
+
+    <div *ngIf="editandoEmpleado" class="form-card">
+      <h2 class="form-title">{{ empleadoSeleccionado?.id ? 'Editar' : 'Agregar' }}</h2>
+      <div class="form-grid">
+        <div class="form-field"><p class="field-label">Nombre</p><ion-input class="custom-input" [(ngModel)]="empleadoSeleccionado.nombre"></ion-input></div>
+        <div class="form-field"><p class="field-label">Apellidos</p><ion-input class="custom-input" [(ngModel)]="empleadoSeleccionado.apellidos"></ion-input></div>
+        <div class="form-field"><p class="field-label">Edad</p><ion-input class="custom-input" type="number" [(ngModel)]="empleadoSeleccionado.edad"></ion-input></div>
+        <div class="form-field"><p class="field-label">Teléfono</p><ion-input class="custom-input" [(ngModel)]="empleadoSeleccionado.telefono"></ion-input></div>
+      </div>
+      <div class="button-group">
+        <ion-button fill="clear" class="cancel-button" (click)="cancelarEdicionEmpleado()">Cancelar</ion-button>
+        <ion-button (click)="guardarEmpleado()" class="save-button">{{ empleadoSeleccionado?.id ? 'Actualizar' : 'Guardar' }}</ion-button>
+      </div>
+    </div>
+
+    <div *ngIf="!editandoEmpleado" class="table-container">
+      <div class="form-container">
+        <p class="input-label" >Empleado</p>
+        <div class="input-button-group">
+          <ion-input class="product-input" placeholder="Nombre del empleado" [(ngModel)]="nuevoProducto.nombre"></ion-input>
+          <ion-button class="add-button" shape="round" (click)="nuevoEmpleadoUI()">
+            <ion-icon class="pi pi-plus-circle"></ion-icon> Agregar
+          </ion-button>
+        </div>
+      </div>
+
+      <table>
+        <thead>
+          <tr>
+            <th>Nombre</th>
+            <th>Apellidos</th>
+            <th>Edad</th>
+            <th>Teléfono</th>
+            <th>Acciones</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let e of empleados">
+            <td>{{ e.nombre }}</td>
+            <td>{{ e.apellidos }}</td>
+            <td>{{ e.edad }}</td>
+            <td>{{ e.telefono }}</td>
+            <td class="action-icons">
+              <i class="pi pi-pencil edit-icon" (click)="editarEmpleadoUI(e)"></i>
+              <i class="pi pi-trash delete-icon" (click)="eliminarEmpleado(e.id)"></i>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+  </div>
+
+  <!-- ========================= SECCIÓN SALIR ========================= -->
+  <div *ngIf="seccionActiva==='salir'">
+    <h2>Salir de la aplicación</h2>
+    <ion-button color="danger">Cerrar sesión</ion-button>
+  </div>
+
 </ion-content>
