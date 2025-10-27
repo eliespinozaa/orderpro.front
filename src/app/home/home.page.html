@@ -1,20 +1,38 @@
-<ion-header [translucent]="true">
+<ion-header>
   <ion-toolbar>
-    <ion-title>
-      Blank
-    </ion-title>
+    <ion-title class="ion-text-center">Inicio</ion-title>
+
+    <ion-buttons slot="end">
+      <ion-icon name="person-circle-outline" class="user-icon"></ion-icon>
+    </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
-<ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">Blank</ion-title>
-    </ion-toolbar>
-  </ion-header>
+<ion-content class="ion-padding custom-background">
+  <div class="main-content">
+    <div class="logo-circle">
+      <p>Logo taqueria</p>
+    </div>
 
-  <div id="container">
-    <strong>Ready to create an app?</strong>
-    <p>Start with Ionic <a target="_blank" rel="noopener noreferrer" href="https://ionicframework.com/docs/components">UI Components</a></p>
+    <p class="waiter-name">{{ userName }}</p>
+
+    <div class="button-container">
+      <ion-button shape="round" class="take-order-button">
+        Tomar orden
+      </ion-button>
+    </div>
+  </div>
+
+  <div class="bottom-bar">
+    <div class="nav-item">
+      <ion-icon name="clipboard-outline"></ion-icon>
+     
+    </div>
+    <div class="nav-item home-icon-container">
+      <ion-icon name="home-outline" class="home-icon" (click)="goHome()"></ion-icon>
+    </div>
+    <div class="nav-item">
+      <ion-icon name="restaurant-outline"></ion-icon>
+    </div>
   </div>
 </ion-content>
