@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Auth } from '../services/auth';
-import { ToastController } from '@ionic/angular';
+import { AlertController, ToastController } from '@ionic/angular';
 
 @Component({
   selector: 'app-administrador',
@@ -15,6 +15,10 @@ export class AdministradorPage implements OnInit {
   productoSeleccionado: any = null;
   editandoProducto: boolean = false;
 
+  productosFiltrados: any[] = [];
+filtroProducto: string = '';
+
+
   // ========================= EMPLEADOS =========================
   empleados: any[] = [];
   empleadoSeleccionado: any = null;
@@ -25,7 +29,9 @@ export class AdministradorPage implements OnInit {
 
   constructor(
     private authService: Auth,
-    private toastController: ToastController
+    private toastController: ToastController,
+   
+  private alertController: AlertController
   ) {}
 
   ngOnInit() {
@@ -53,15 +59,57 @@ export class AdministradorPage implements OnInit {
   }
 
   // ========================= PRODUCTOS =========================
-  cargarProductos() {
-    this.authService
-      .getProductos()
-      .subscribe({
-        next: (res) => (this.productos = res),
-        error: (err) =>
-          this.presentToast(err.message || 'Error al cargar productos'),
-      });
-  }
+cargarProductos() {
+  this.authService.getProductos().subscribe({
+    next: (res) => {
+      this.productos = res;
+      this.productosFiltrados = res; 
+    },
+    error: (err) => this.presentToast(err.message || 'Error al cargar productos'),
+  });
+}
+
+filtrarProductos() {
+  const filtro = this.filtroProducto.toLowerCase();
+  this.productosFiltrados = this.productos.filter((p) =>
+    p.nombre.toLowerCase().includes(filtro)
+  );
+}
+
+async cerrarSesion() {
+  const alert = await this.alertController.create({
+    cssClass: 'custom-alert',
+    header: 'Cerrar sesión',
+    message: '¿Seguro que deseas salir de tu cuenta?',
+    buttons: [
+      {
+        text: 'Cancelar',
+        role: 'cancel',
+        cssClass: 'cancel-button',
+      },
+      {
+        text: 'Cerrar sesión',
+        handler: async () => {
+          await this.authService.logout();
+
+          const toast = await this.toastController.create({
+            message: 'Sesión cerrada correctamente',
+            color: 'success',
+            duration: 2000,
+            position: 'top',
+            icon: 'log-out-outline',
+          });
+          await toast.present();
+        },
+        cssClass: 'confirm-button',
+      },
+    ],
+  });
+
+  await alert.present();
+}
+
+
 
   nuevoProductoUI() {
     this.productoSeleccionado = {
@@ -118,17 +166,29 @@ export class AdministradorPage implements OnInit {
     });
   }
 
+  empleadosFiltrados: any[] = [];
+  filtro: string = '';
   // ========================= EMPLEADOS =========================
-  cargarEmpleados() {
-    this.authService
-      .getEmpleados()
-      .subscribe({
-        next: (res) => (this.empleados = res),
-        error: (err) =>
-          this.presentToast(err.message || 'Error al cargar empleados'),
-      });
+ cargarEmpleados() {
+    this.authService.getEmpleados().subscribe({
+      next: (data) => {
+        this.empleados = data;
+        this.empleadosFiltrados = data;
+      },
+      error: (err) => {
+        console.error('Error al obtener empleados:', err);
+      }
+    });
   }
 
+  filtrarEmpleados() {
+    const texto = this.filtro.toLowerCase();
+    this.empleadosFiltrados = this.empleados.filter(emp =>
+      emp.nombre.toLowerCase().includes(texto) ||
+      emp.apellidos.toLowerCase().includes(texto) ||
+      emp.telefono.includes(texto)
+    );
+  }
   nuevoEmpleadoUI() {
     this.empleadoSeleccionado = {
       nombre: '',

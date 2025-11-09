@@ -1,39 +1,51 @@
-<ion-header [translucent]="true">
-  <ion-toolbar>
-    <!--<ion-title>Login</ion-title>-->
-  </ion-toolbar>
-</ion-header>
+<ion-content class="login-background">
+  <div class="login-card">
+    <h2 class="login-title">Iniciar Sesión</h2>
 
-<ion-content [fullscreen]="true" class="ion-padding">
-  <div class="login-title">
-    Inicia Sesión
+    <h1 class="app-name">
+      <span class="order">ORDER</span><br />
+      <span class="pro">PRO</span>
+    </h1>
+
+    <form [formGroup]="loginForm" (ngSubmit)="onLogin()">
+      <ng-container *ngIf="isAdmin; else  empleadoForm">
+        <div class="input-group">
+          <ion-icon name="person-outline"></ion-icon>
+          <ion-input
+            type="email"
+            placeholder="Usuario"
+            formControlName="correo"
+          ></ion-input>
+        </div>
+
+        <div class="input-group">
+          <ion-icon name="key-outline"></ion-icon>
+          <ion-input
+            type="password"
+            placeholder="Contraseña"
+            formControlName="contrasena"
+          ></ion-input>
+        </div>
+      </ng-container>
+
+      <ng-template #empleadoForm>
+        <div class="input-group">
+          <ion-icon name="person-outline"></ion-icon>
+          <ion-input
+            type="tel"
+            placeholder="Número de teléfono"
+            formControlName="telefono"
+          ></ion-input>
+        </div>
+      </ng-template>
+
+      <ion-button expand="full" type="submit" class="login-btn">
+        Acceder
+      </ion-button>
+
+      <ion-button fill="clear" expand="full" (click)="toggleMode()" class="switch-btn">
+        {{ isAdmin ? 'Empleado' : 'Administrador' }}
+      </ion-button>
+    </form>
   </div>
-  <form [formGroup]="loginForm" (ngSubmit)="onLogin()">
-    
-    <ion-item *ngIf="!isAdmin">
-      <ion-label position="floating">Número de teléfono</ion-label>
-      <ion-input type="tel" formControlName="telefono"></ion-input>
-    </ion-item>
-
-    <ng-container *ngIf="isAdmin">
-      <ion-item>
-        <ion-label position="floating">Correo</ion-label>
-        <ion-input type="email" formControlName="correo"></ion-input>
-      </ion-item>
-
-      <ion-item>
-        <ion-label position="floating">Contraseña</ion-label>
-        <ion-input type="password" formControlName="contrasena"></ion-input>
-      </ion-item>
-    </ng-container>
-
-    <ion-button expand="full" type="submit" class="ion-margin-top">
-      Acceder
-    </ion-button>
-     <ion-button fill="clear" expand="full" (click)="toggleMode()">
-    {{ isAdmin ? 'Soy Empleado' : 'Soy Administrador' }}
-  </ion-button>
-  </form>
-
- 
 </ion-content>

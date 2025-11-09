@@ -1,73 +1,83 @@
-ion-content {
-  --background: #ffffff; 
+.login-background {
+  --background: #f6f6f6; 
   display: flex;
-  justify-content: center;   
-  align-items: center;      
-  height: 100vh;           
-  padding: 0 1rem;           
+  justify-content: center;
+  align-items: center; 
+  height: 100%;
 }
 
-form {
-  width: 100%;
-  max-width: 400px;
-  background: #fff;
+.login-card {
+  background: white;
+  width: 90%;
+  max-width: 350px;
   padding: 2rem;
-  border-radius: 12px;
-  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
-  color: #333;
-  display: flex;
-  flex-direction: column;
-  align-items: stretch;
+  border-radius: 20px;
+  box-shadow: 0 4px 25px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  margin-top: 80px;
+  margin-left: 20px;
 }
-
-ion-header {
-  ion-title {
-    color: #fa9e7c;
-    font-weight: bold;
-    font-size: 2rem;
-    text-align: center;
-    margin-bottom: 1rem;
-  }
-}
-
-ion-item {
-  --background: #fff;
-  margin-bottom: 1rem;
-  border-radius: 8px;
-  --highlight-color-focused: #fa9e7c;
-  --placeholder-color-focused: #fa9e7c;
-}
-
-ion-label {
-  color: #fa9e7c;
-  font-weight: bold;
-}
-
-ion-input {
-  color: #333;
-}
-
-ion-button {
-  --background: #fa9e7c;
-  --color: #fff;
-  --border-radius: 8px;
-  font-weight: bold;
-  margin-top: 1rem;
-}
-
-ion-button:hover {
-  --background: #e68b6a;
-}
-
-form, form ion-label, form ion-input, form ion-text {
-  color: #333;
-}
-
 
 .login-title {
-  text-align: center;
-  font-size: 1.8rem;
+  color: #757272;
+  font-size: 20px;
+  margin-bottom: 10px;
+}
+
+.app-name {
+  margin-bottom: 25px;
+}
+
+.order {
+  color: #d9d20c;
   font-weight: bold;
-  margin-bottom: 20px;
-  color: black; 
+  font-size: 32px;
+}
+
+.pro {
+  color: #d9d20c;
+  font-size: 28px;
+  font-weight: 600;
+}
+
+.login-btn {
+  --background: #d9d20c;
+  margin-top: 15px;
+  border-radius: 10px;
+}
+
+.switch-btn {
+  color: #d9d20c;
+  margin-top: 5px;
+}
+
+
+/* 🔹 INPUTS BONITOS */
+.input-group {
+  display: flex;
+  align-items: center;
+  background: #f7fbd9;
+  border-radius: 12px;
+  padding: 0.5rem 0.8rem;
+  margin-bottom: 15px;
+  transition: all 0.3s ease;
+}
+
+.input-group ion-icon {
+  color: #8c8c8c;
+  font-size: 20px;
+  margin-right: 8px;
+}
+
+.input-group ion-input {
+  flex: 1;
+  color: #333;
+  --padding-start: 0;
+  --padding-end: 0;
+  --background: transparent;
+}
+
+.input-group:focus-within {
+  background: #fff;
+  box-shadow: 0 0 0 2px #f7fbd9;
 }

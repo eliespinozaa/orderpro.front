@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, map, catchError, throwError } from 'rxjs';
+import { Router } from '@angular/router';
 
 @Injectable({
   providedIn: 'root'
@@ -8,7 +9,7 @@ import { Observable, map, catchError, throwError } from 'rxjs';
 export class Auth {
   private apiUrl = 'http://localhost:8080/backendorderpro/';
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient, private router: Router) {}
 
   loginAdmin(correo: string, contrasena: string): Observable<any> {
     return this.http.post<any>(`${this.apiUrl}login.php`, { correo, contrasena }).pipe(
@@ -54,10 +55,12 @@ export class Auth {
     return empStr ? JSON.parse(empStr) : null;
   }
 
-  logout() {
-    localStorage.removeItem('user');
-    localStorage.removeItem('empleado');
-  }
+ logout() {
+  localStorage.removeItem('user');
+  localStorage.removeItem('empleado');
+  this.router.navigate(['/home']);
+}
+
 
   createEmpleado(data: { nombre: string; apellidos: string; edad: number; telefono: string }): Observable<any> {
     return this.http.post<any>(`${this.apiUrl}create-empleado.php`, data).pipe(

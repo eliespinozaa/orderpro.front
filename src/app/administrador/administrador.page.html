@@ -48,7 +48,13 @@
       <div class="form-container" *ngIf="!editandoProducto">
         <p class="input-label">Producto</p>
         <div class="input-button-group">
-          <ion-input class="product-input" placeholder="Nombre del producto" [(ngModel)]="nuevoProducto.nombre"></ion-input>
+          <ion-input
+  class="product-input"
+ 
+  [(ngModel)]="filtroProducto"
+  (input)="filtrarProductos()"
+></ion-input>
+
           <ion-button class="add-button" shape="round" (click)="nuevoProductoUI()">         
             <ion-icon class="pi pi-plus-circle"></ion-icon>Agregar</ion-button>
         </div>
@@ -66,7 +72,7 @@
           </tr>
         </thead>
         <tbody>
-          <tr *ngFor="let p of productos">
+          <tr *ngFor="let p of productosFiltrados">
             <td>{{ p.nombre }}</td>
             <td>{{ p.precio | currency:'MXN' }}</td>
             <td>{{ p.unidad_medida }}</td>
@@ -102,7 +108,7 @@
       <div class="form-container">
         <p class="input-label" >Empleado</p>
         <div class="input-button-group">
-          <ion-input class="product-input" placeholder="Nombre del empleado" [(ngModel)]="nuevoProducto.nombre"></ion-input>
+          <ion-input class="product-input" [(ngModel)]="filtro" (ionInput)="filtrarEmpleados()"></ion-input>
           <ion-button class="add-button" shape="round" (click)="nuevoEmpleadoUI()">
             <ion-icon class="pi pi-plus-circle"></ion-icon> Agregar
           </ion-button>
@@ -120,7 +126,7 @@
           </tr>
         </thead>
         <tbody>
-          <tr *ngFor="let e of empleados">
+          <tr *ngFor="let e of empleadosFiltrados">
             <td>{{ e.nombre }}</td>
             <td>{{ e.apellidos }}</td>
             <td>{{ e.edad }}</td>
@@ -139,7 +145,7 @@
   <!-- ========================= SECCIÓN SALIR ========================= -->
   <div *ngIf="seccionActiva==='salir'">
     <h2>Salir de la aplicación</h2>
-    <ion-button color="danger">Cerrar sesión</ion-button>
+    <ion-button color="danger" (click)="cerrarSesion()">Cerrar sesión</ion-button>
   </div>
 
 </ion-content>
