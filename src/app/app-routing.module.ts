@@ -20,7 +20,8 @@ const routes: Routes = [
   },
   {
     path: 'administrador',
-    loadChildren: () => import('./administrador/administrador.module').then( m => m.AdministradorPageModule)
+    loadChildren: () => import('./administrador/administrador.module').then( m => m.AdministradorPageModule),
+     canActivate: [AuthGuard]
   },
 ];
 

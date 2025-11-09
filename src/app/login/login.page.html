@@ -8,7 +8,7 @@
     </h1>
 
     <form [formGroup]="loginForm" (ngSubmit)="onLogin()">
-      <ng-container *ngIf="isAdmin; else  empleadoForm">
+      <ng-container *ngIf="isAdmin">
         <div class="input-group">
           <ion-icon name="person-outline"></ion-icon>
           <ion-input
@@ -28,7 +28,7 @@
         </div>
       </ng-container>
 
-      <ng-template #empleadoForm>
+      <ng-container *ngIf="!isAdmin">
         <div class="input-group">
           <ion-icon name="person-outline"></ion-icon>
           <ion-input
@@ -37,7 +37,7 @@
             formControlName="telefono"
           ></ion-input>
         </div>
-      </ng-template>
+      </ng-container>
 
       <ion-button expand="full" type="submit" class="login-btn">
         Acceder

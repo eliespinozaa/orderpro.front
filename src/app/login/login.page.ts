@@ -54,7 +54,7 @@ export class LoginPage implements OnInit {
     toast.present();
   }
 
-  onLogin() {
+onLogin() {
   if (this.loginForm.invalid) {
     this.presentToast('Por favor llena todos los campos correctamente');
     return;
@@ -65,7 +65,7 @@ export class LoginPage implements OnInit {
     this.authService.loginAdmin(correo, contrasena).subscribe({
       next: (user) => {
         this.presentToast(`Bienvenido ${user.full_name}`, 'success');
-        this.router.navigate(['/administrador']);
+        this.router.navigate(['/administrador']); 
       },
       error: (err) => this.presentToast(err.message || 'Correo o contraseña incorrectos')
     });
@@ -73,12 +73,14 @@ export class LoginPage implements OnInit {
     const { telefono } = this.loginForm.value;
     this.authService.loginEmpleado(telefono).subscribe({
       next: (empleado) => {
-        this.presentToast(`Bienvenido ${empleado.nombre + " " + empleado.apellidos}`, 'success');
-        this.router.navigate(['/login']);
+        this.presentToast(`Bienvenido ${empleado.nombre} ${empleado.apellidos}`, 'success');
+        this.router.navigate(['/login']); 
       },
       error: (err) => this.presentToast(err.message || 'Teléfono no registrado')
     });
   }
 }
+
+
 
 }

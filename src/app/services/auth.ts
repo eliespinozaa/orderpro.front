@@ -11,39 +11,47 @@ export class Auth {
 
   constructor(private http: HttpClient, private router: Router) {}
 
-  loginAdmin(correo: string, contrasena: string): Observable<any> {
-    return this.http.post<any>(`${this.apiUrl}login.php`, { correo, contrasena }).pipe(
-      map(response => {
-        if (response.success) {
-          localStorage.setItem('user', JSON.stringify(response.user));
-          return response.user;
-        } else {
-          throw new Error(response.error || 'Login fallido');
-        }
-      }),
-      catchError(err => {
-        const errorMsg = err.error?.error || err.message || 'Error desconocido';
-        return throwError(() => new Error(errorMsg));
-      })
-    );
-  }
+ loginAdmin(correo: string, contrasena: string): Observable<any> {
+  return this.http.post<any>(`${this.apiUrl}login.php`, { correo, contrasena }).pipe(
+    map(response => {
+      if (response.success) {
+        const userWithRole = { ...response.user, role: 'admin' };
+        localStorage.setItem('user', JSON.stringify(userWithRole));
+        localStorage.setItem('role', 'admin');
+        return userWithRole;
+      } else {
+        throw new Error(response.error || 'Login fallido');
+      }
+    }),
+    catchError(err => {
+      const errorMsg = err.error?.error || err.message || 'Error desconocido';
+      return throwError(() => new Error(errorMsg));
+    })
+  );
+}
 
-  loginEmpleado(telefono: string): Observable<any> {
-    return this.http.post<any>(`${this.apiUrl}login-empleado.php`, { telefono }).pipe(
-      map(response => {
-        if (response.success) {
-          localStorage.setItem('empleado', JSON.stringify(response.user));
-          return response.user;
-        } else {
-          throw new Error(response.error || 'Login fallido');
-        }
-      }),
-      catchError(err => {
-        const errorMsg = err.error?.error || err.message || 'Error desconocido';
-        return throwError(() => new Error(errorMsg));
-      })
-    );
-  }
+loginEmpleado(telefono: string): Observable<any> {
+  return this.http.post<any>(`${this.apiUrl}login-empleado.php`, { telefono }).pipe(
+    map(response => {
+      if (response.success) {
+        const empWithRole = { ...response.user, role: 'empleado' };
+        localStorage.setItem('empleado', JSON.stringify(empWithRole));
+        localStorage.setItem('role', 'empleado'); 
+        return empWithRole;
+      } else {
+        throw new Error(response.error || 'Login fallido');
+      }
+    }),
+    catchError(err => {
+      const errorMsg = err.error?.error || err.message || 'Error desconocido';
+      return throwError(() => new Error(errorMsg));
+    })
+  );
+}
+getRole(): string | null {
+  return localStorage.getItem('role');
+}
+
 
   getUser(): any {
     const userStr = localStorage.getItem('user');
