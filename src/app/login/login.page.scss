@@ -1,23 +1,42 @@
+/* Fondo */
 .login-background {
   --background: #f6f6f6; 
   display: flex;
   justify-content: center;
   align-items: center; 
-  height: 100%;
+  min-height: 100vh; /* ocupa toda la altura de la pantalla */
+  padding: 20px;
+  box-sizing: border-box;
+}
+/* Contenedor para centrar verticalmente */
+.login-center {
+  display: flex;
+  justify-content: center; /* centra horizontal */
+  align-items: center;     /* centra vertical */
+  height: 100vh;           /* ocupa toda la altura de la pantalla */
 }
 
+/* Fondo */
+.login-background {
+  --background: #f6f6f6;
+  --padding-top: 0;    /* elimina padding de ion-content */
+  --padding-bottom: 0; 
+}
+
+/* Card del login */
 .login-card {
   background: white;
-  width: 90%;
-  max-width: 350px;
+  width: 100%;
+  max-width: 500px; /* tamaño máximo en pantallas grandes */
   padding: 2rem;
   border-radius: 20px;
   box-shadow: 0 4px 25px rgba(0, 0, 0, 0.1);
   text-align: center;
-  margin-top: 80px;
-  margin-left: 20px;
+  margin: 0 auto; /* centrado horizontal */
+  box-sizing: border-box;
 }
 
+/* Títulos */
 .login-title {
   color: #757272;
   font-size: 20px;
@@ -40,6 +59,7 @@
   font-weight: 600;
 }
 
+/* Botones */
 .login-btn {
   --background: #d9d20c;
   margin-top: 15px;
@@ -51,7 +71,7 @@
   margin-top: 5px;
 }
 
-
+/* Inputs */
 .input-group {
   display: flex;
   align-items: center;
@@ -79,4 +99,57 @@
 .input-group:focus-within {
   background: #fff;
   box-shadow: 0 0 0 2px #f7fbd9;
+}
+
+/* =====================
+   MEDIA QUERIES
+===================== */
+
+/* Pantallas medianas (tablets) */
+@media (max-width: 768px) {
+  .login-card {
+    max-width: 350px;
+    padding: 1.8rem;
+  }
+
+  .order {
+    font-size: 28px;
+  }
+
+  .pro {
+    font-size: 24px;
+  }
+}
+
+/* Pantallas pequeñas (móviles) */
+@media (max-width: 480px) {
+  .login-card {
+    max-width: 90%; /* ocupa casi todo el ancho pero deja margen */
+    padding: 1.5rem;
+  }
+
+  .login-title {
+    font-size: 18px;
+  }
+
+  .order {
+    font-size: 24px;
+  }
+
+  .pro {
+    font-size: 20px;
+  }
+
+  .input-group ion-icon {
+    font-size: 18px;
+    margin-right: 6px;
+  }
+
+  .input-group ion-input {
+    font-size: 14px;
+  }
+
+  .login-btn, .switch-btn {
+    font-size: 14px;
+  }
 }

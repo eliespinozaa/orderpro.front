@@ -1,51 +1,64 @@
 <ion-content class="login-background">
-  <div class="login-card">
-    <h2 class="login-title">Iniciar Sesión</h2>
+  <div class="login-center">
+    <div class="container">
+      <div class="row justify-content-center">
+        <div class="col-12 col-sm-10 col-md-8 col-lg-6 col-xl-4">
+          <div class="login-card">
+            <h2 class="login-title">Iniciar Sesión</h2>
 
-    <h1 class="app-name">
-      <span class="order">ORDER</span><br />
-      <span class="pro">PRO</span>
-    </h1>
+            <h1 class="app-name">
+              <span class="order">ORDER</span><br />
+              <span class="pro">PRO</span>
+            </h1>
 
-    <form [formGroup]="loginForm" (ngSubmit)="onLogin()">
-      <ng-container *ngIf="isAdmin">
-        <div class="input-group">
-          <ion-icon name="person-outline"></ion-icon>
-          <ion-input
-            type="email"
-            placeholder="Usuario"
-            formControlName="correo"
-          ></ion-input>
+            <form [formGroup]="loginForm" (ngSubmit)="onLogin()">
+              <ng-container *ngIf="isAdmin">
+                <div class="input-group">
+                  <ion-icon name="person-outline"></ion-icon>
+                  <ion-input
+                    type="email"
+                    placeholder="Usuario"
+                    formControlName="correo"
+                  ></ion-input>
+                </div>
+
+                <div class="input-group">
+                  <ion-icon name="key-outline"></ion-icon>
+                  <ion-input
+                    type="password"
+                    placeholder="Contraseña"
+                    formControlName="contrasena"
+                  ></ion-input>
+                </div>
+              </ng-container>
+
+              <ng-container *ngIf="!isAdmin">
+                <div class="input-group">
+                  <ion-icon name="person-outline"></ion-icon>
+                  <ion-input
+                    type="tel"
+                    placeholder="Número de teléfono"
+                    formControlName="telefono"
+                  ></ion-input>
+                </div>
+              </ng-container>
+
+              <ion-button expand="full" type="submit" class="login-btn">
+                Acceder
+              </ion-button>
+
+              <ion-button
+                fill="clear"
+                expand="full"
+                (click)="toggleMode()"
+                class="switch-btn"
+              >
+                {{ isAdmin ? 'Empleado' : 'Administrador' }}
+              </ion-button>
+            </form>
+          </div>
         </div>
-
-        <div class="input-group">
-          <ion-icon name="key-outline"></ion-icon>
-          <ion-input
-            type="password"
-            placeholder="Contraseña"
-            formControlName="contrasena"
-          ></ion-input>
-        </div>
-      </ng-container>
-
-      <ng-container *ngIf="!isAdmin">
-        <div class="input-group">
-          <ion-icon name="person-outline"></ion-icon>
-          <ion-input
-            type="tel"
-            placeholder="Número de teléfono"
-            formControlName="telefono"
-          ></ion-input>
-        </div>
-      </ng-container>
-
-      <ion-button expand="full" type="submit" class="login-btn">
-        Acceder
-      </ion-button>
-
-      <ion-button fill="clear" expand="full" (click)="toggleMode()" class="switch-btn">
-        {{ isAdmin ? 'Empleado' : 'Administrador' }}
-      </ion-button>
-    </form>
+      </div>
+    </div>
   </div>
 </ion-content>
