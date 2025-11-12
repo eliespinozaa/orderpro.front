@@ -1,5 +1,5 @@
 /* Colores principales */
-$main-orange: #ff9a7c;
+/*$main-orange: #ff9a7c;
 $light-yellow: #fffbe6; 
 
 ion-content {
@@ -117,4 +117,640 @@ ion-header ion-toolbar {
     font-size: 30px;
     color: white; 
   }
+}*/
+
+
+
+$main-dark-gray: #424242;
+$main-yellow: #fdd835;  
+$main-light-gray: #f5f5f5; 
+$main-blue: #40c4ff;     
+$table-light-yellow: #fffde7; 
+ion-content {
+  --background: #ffff;
+}
+
+.custom-background {
+  background-color: $main-light-gray;
+  height: 100vh;
+  width: 100%;
+  max-width: 800px;
+  margin: 0 auto; 
+  padding: 20px;
+}
+
+
+
+.header-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 20px;
+  background-color: #eaeae6;
+  
+}
+
+.logo-icon-container {
+  margin-right: 20px;
+  margin-top: 10px;
+  .logo-icon {
+    font-size: 80px;
+    color: white; 
+    margin-left: 20px;
+    transform: translate(-30px, -20px);
+  }
+}
+
+.title-text-container {
+  display: flex;
+  flex-direction: column;
+  text-align: right;
+  flex-grow: 1; 
+
+  .title-order {
+    font-size: 38px;
+    font-weight: 900;
+    color: #d9d20c;
+    margin: 0;
+    line-height: 0.9;
+  }
+
+  .title-pro {
+    font-size: 38px;
+    font-weight: 900;
+    color: #d9d20c;
+    margin: 0;
+    line-height: 0.9;
+    padding-left: 30px; 
+  }
+}
+
+
+
+.nav-menu {
+  display: flex;
+  justify-content: flex-end;
+  gap: 15px;
+  font-size: 14px;
+  margin-top: -15px;
+  margin-bottom: 30px;
+
+  .nav-item {
+    color: #888; 
+    cursor: pointer;
+    &:hover {
+      color: #555;
+    }
+    &.active-nav {
+      color: #333;
+      font-weight: 500;
+      text-shadow: 0 0 1px rgba(0, 0, 0, 0.1);
+    }
+  }
+}
+
+
+
+
+.form-container {
+  padding: 10px;
+  margin-bottom: 20px;
+  border-radius: 5px;
+  background-color: white;
+}
+
+.input-label {
+  font-size: 16px;
+  font-weight: 500;
+  color: #333;
+  margin-bottom: 5px;
+}
+
+.input-button-group {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+.product-input {
+  --background: #f7fbd9; 
+  --padding-start: 10px;
+  color: #444;
+  height: 40px;
+  flex-grow: 1; 
+  border: 1px solid #f7fbd9;
+  border-radius: 5px;
+}
+
+.add-button {
+  --background: #47d5f1;
+  --color: white;
+  --box-shadow: none;
+  height: 40px;
+  font-size: 14px;
+  font-weight: bold;
+  ion-icon {
+    font-size: 18px;
+    margin-right: 5px;
+    background-color: white;
+    color: #47d5f1;
+    border-radius: 10px;
+    transform: translateY(1px); 
+  }
+}
+
+
+
+.table-container {
+  overflow-x: auto;
+  padding: 10px;
+  background-color: white;
+}
+
+table {
+  width: 100%;
+  border-collapse: separate; 
+  border-spacing: 0 5px; 
+  font-size: 14px;
+}
+
+thead th {
+  background-color: #fffd92; 
+  color: #333;
+  padding: 10px 15px;
+  text-align: left;
+  font-weight: bold;
+
+  &:first-child {
+    border-top-left-radius: 5px;
+    border-bottom-left-radius: 5px;
+  }
+  &:last-child {
+    border-top-right-radius: 5px;
+    border-bottom-right-radius: 5px;
+  }
+}
+
+tbody tr {
+  background-color: white;
+  
+  &:nth-child(even) {
+    background-color: #fdfcdb; 
+  }
+
+  td {
+    padding: 10px 15px;
+    color: #444;
+    &:first-child {
+      border-top-left-radius: 5px;
+      border-bottom-left-radius: 5px;
+    }
+    &:last-child {
+      border-top-right-radius: 5px;
+      border-bottom-right-radius: 5px;
+    }
+  }
+}
+
+.action-icons {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  justify-content: center; 
+  
+  ion-icon {
+    font-size: 18px;
+    cursor: pointer;
+  }
+
+  .edit-icon {
+    color: #666d64;
+  }
+
+  .delete-icon {
+    color: #871111;
+  }
+}
+
+
+
+
+.action-icons {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  justify-content: center;
+
+  ion-icon {
+    font-size: 18px; 
+    cursor: pointer;
+    font-family: 'PrimeIcons' !important; 
+    font-weight: 900;
+  }
+
+  .edit-icon {
+    color: #666d64; 
+    
+  }
+
+  .delete-icon {
+    color: #871111;
+
+  }
+}
+
+
+
+
+.form-card {
+  background-color: white; 
+  border-radius: 10px;
+  padding: 25px;
+  width: 90%; 
+  max-width: 500px; 
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1); 
+  border: 1px solid #e0e0e0; 
+  
+  margin: 20px auto; 
+}
+
+.form-title {
+  font-size: 20px;
+  font-weight: 500;
+  color: #555;
+  text-align: center;
+  margin-top: 0;
+  margin-bottom: 30px;
+}
+
+.form-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px 25px; 
+  margin-bottom: 40px; 
+}
+
+.form-field {
+  .field-label {
+    font-size: 15px;
+    color:#555;
+    margin-bottom: 5px;
+    font-weight: 400; 
+  }
+
+  .custom-input {
+    --background:#f7fbd9; 
+    --padding-start: 12px;
+    --padding-end: 12px;
+    --padding-top: 10px;
+    --padding-bottom: 10px;
+    height: 45px; 
+    border-radius: 5px; 
+    border: 1px solid #e0e0e0; 
+    color: #333;
+    font-size: 15px;
+
+    &.ion-invalid.ion-touched {
+      --border-color: var(--ion-color-danger, #eb445a);
+    }
+  }
+}
+
+.button-group {
+  display: flex;
+  justify-content: flex-end; 
+  gap: 15px; 
+
+  .cancel-button {
+    --color: #555; 
+    font-size: 8px;
+    height: 20px;
+  }
+
+  .save-button {
+    --background: #75bcfa; 
+    --color: white; 
+    font-size: 8px;
+    font-weight: 500;
+    height: 20px;
+
+   
+    border-radius: 5px; 
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); 
+  }
+}
+
+
+ion-content {
+  // Color de fondo del contenedor principal (el área que contiene todo)
+  --background: #fdfaf5; 
+  padding: 20px;
+}
+
+.welcome-header {
+  text-align: center;
+  margin-bottom: 40px;
+  
+  h1 {
+    font-size: 2.2em;
+    font-weight: 500;
+    color: #5d4a31; 
+    letter-spacing: 0.5px;
+  }
+}
+
+.action-card {
+  // Estilo del "botón"
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 150px; // Altura fija para hacerlos cuadrados o rectangulares
+  width: 100%;
+  
+  // Color de fondo claro (crema/beige muy suave)
+  background-color: #f7f6f1; 
+  
+  // Bordes redondeados y sombra para dar efecto de "elevación"
+  border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+  
+  // Estilo del texto
+  font-size: 1.1em;
+  font-weight: 500;
+  color: #333; // Texto oscuro
+  text-align: center;
+  
+  // Efecto visual al pasar el ratón o tocar (opcional, mejora UX)
+  transition: transform 0.2s, box-shadow 0.2s;
+  cursor: pointer;
+
+  &:active {
+    transform: translateY(2px);
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  }
+}
+
+// Centrar la rejilla en pantallas grandes
+ion-grid {
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+// Estilo para el contenedor general que simula el marco exterior de la imagen
+.ion-page {
+  background: #e8e6e0; // Color del marco exterior
+  padding: 15px; // Espaciado del marco
+  border-radius: 20px;
+  box-sizing: border-box;
+}
+
+
+
+
+
+// Paleta de colores ajustada al diseño
+$color-header: #5d4a31;       // Marrón oscuro para "Tomar Orden"
+$color-background-outer: #e8e6e0; // Fondo exterior (marco)
+$color-background-inner: #fdfaf5; // Fondo principal del contenedor
+$color-input-bg: #f7f6f1;       // Fondo de inputs
+$color-input-text: #666;        // Texto placeholder
+$color-highlight-row: #fffac2;  // Fondo de la fila de "Suadero"
+
+// Colores de las tarjetas de producto
+$color-tripa: #9acd6a;    // Verde oliva
+$color-suadero: #6acdaf;  // Azul turquesa
+$color-consome: #d8c29e;  // Beige claro
+$color-guardar: #fce899;  // Amarillo pastel para "Guardar"
+
+// Icono de acción (color del +)
+$color-icon-add: #333; 
+
+
+
+.main-container {
+  background: $color-background-inner;
+  border-radius: 15px;
+  padding: 20px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+}
+
+// --- Encabezados ---
+.header {
+  text-align: center;
+  margin-bottom: 25px;
+
+  h1 {
+    font-family: serif; // Usar una fuente con serifa o similar al diseño
+    font-size: 1.9em;
+    font-weight: 600;
+    color: $color-header;
+  }
+}
+
+h2 {
+  font-size: 1.2em;
+  font-weight: 600;
+  margin-top: 15px;
+  margin-bottom: 10px;
+  color: #333;
+}
+
+// --- Cliente y Mesa ---
+label {
+  display: block;
+  font-weight: 500;
+  margin-bottom: 5px;
+  color: #333;
+  font-size: 0.95em;
+}
+
+.input-container {
+  background-color: $color-input-bg;
+  border-radius: 5px;
+  margin-bottom: 15px;
+  padding: 0;
+  height: 40px;
+  
+  input, select {
+    width: 100%;
+    height: 100%;
+    padding: 0 10px;
+    background: transparent;
+    border: none;
+    outline: none;
+    font-size: 1em;
+    
+    &::placeholder {
+      color: $color-input-text;
+      font-style: italic;
+    }
+  }
+}
+
+// --- Productos ---
+.product-cards-container {
+  display: flex;
+  gap: 15px;
+  // Permite el scroll horizontal en móvil si se necesita
+  overflow-x: auto; 
+  flex-wrap: nowrap;
+  padding-bottom: 5px; 
+}
+
+.product-card {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px 10px;
+  min-width: 110px;
+  flex-shrink: 0; 
+  height: 80px;
+  border-radius: 10px;
+  border: none;
+  color: #333;
+  font-weight: 500;
+  box-shadow: 0 4px 5px rgba(0, 0, 0, 0.1); // Sombra más marcada
+  cursor: pointer;
+  position: relative;
+  text-align: center;
+}
+
+.add-icon {
+  position: absolute;
+  bottom: 5px;
+  right: 5px;
+  font-size: 1.4em;
+  color: $color-icon-add;
+  background-color: transparent;
+  // Simular el + más grueso con la sombra del círculo
+  filter: drop-shadow(0 0 1px rgba(0, 0, 0, 0.4));
+}
+
+.card-tripa { background-color: $color-tripa; }
+.card-suadero { background-color: $color-suadero; }
+.card-consome { background-color: $color-consome; }
+
+
+// --- Detalle del Pedido ---
+.order-detail-box {
+  padding: 15px;
+  background: #fff;
+  border-radius: 10px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  margin-bottom: 20px;
+  overflow-x: auto; // Responsividad para la tabla
+}
+
+.order-table {
+  width: 100%;
+  min-width: 500px; // Evita que se colapsen las columnas en móvil
+  border-collapse: collapse;
+  font-size: 0.9em;
+
+  th, td {
+    padding: 8px 5px;
+    text-align: left;
+    border-bottom: 1px solid #f0f0f0;
+    white-space: nowrap; // No envuelve el texto
+  }
+  
+  th {
+    font-weight: 600;
+    color: #333; // Color oscuro
+    background-color: transparent;
+    padding-bottom: 10px;
+    border-bottom: 3px solid #f0f0f0; // Línea más gruesa bajo encabezado
+  }
+  
+  .highlight-row {
+    background-color: $color-highlight-row; // Fila amarilla
+  }
+
+  .actions-cell {
+    text-align: center;
+    ion-icon {
+      font-size: 1em;
+      margin-left: 8px;
+      cursor: pointer;
+    }
+    .edit-icon { color: #5d4a31; } // Marrón oscuro
+    .delete-icon { color: #cc0000; } // Rojo
+  }
+}
+
+// --- Totales ---
+.totals-area {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  margin-top: 20px;
+  padding-right: 10px;
+}
+
+.total-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  max-width: 250px;
+  margin-top: 5px;
+}
+
+.total-row:nth-child(2) {
+    margin-top: 15px;
+}
+
+.tip-input-container {
+  @extend .input-container; // Hereda el estilo del input
+  background-color: #fffac2; // Fondo amarillo
+  width: 120px;
+  height: 35px;
+  padding: 0 5px;
+  
+  .tip-select {
+    color: #333;
+    -webkit-appearance: none; // Oculta flecha por defecto
+    -moz-appearance: none;
+    appearance: none;
+    background: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2212%22%20height%3D%2212%22%20viewBox%3D%220%200%2012%2012%22%3E%3Cpath%20d%3D%22M10%203L6%207L2%203Z%22%20fill%3D%22%23333333%22%2F%3E%3C%2Fsvg%3E") no-repeat right 5px center;
+    background-size: 10px;
+    text-align: right;
+  }
+}
+
+.total-label {
+    font-size: 1.1em;
+    font-weight: 700;
+}
+
+.total-value {
+  font-size: 1.3em;
+  font-weight: 700;
+  color: $color-header;
+  background-color: $color-highlight-row; // Fondo amarillo del total
+  padding: 3px 10px;
+  border-radius: 5px;
+  min-width: 80px;
+  text-align: right;
+}
+
+// --- Botón Guardar ---
+.save-button-container {
+    display: flex;
+    justify-content: flex-end;
+}
+
+.save-button {
+  background-color: $color-guardar;
+  color: #333;
+  font-weight: 600;
+  font-size: 1.1em;
+  padding: 10px 30px;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  margin-top: 10px;
+  width: 150px; // Ancho fijo para parecerse al diseño
 }

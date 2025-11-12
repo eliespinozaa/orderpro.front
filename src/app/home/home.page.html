@@ -1,4 +1,4 @@
-<ion-header>
+<!--<ion-header>
   <ion-toolbar>
     <ion-title class="ion-text-center">Inicio</ion-title>
 
@@ -35,4 +35,165 @@
       <ion-icon name="restaurant-outline"></ion-icon>
     </div>
   </div>
+</ion-content>-->
+
+<ion-content class="ion-padding custom-background">
+
+  <div class="header-container">
+    <div class="logo-icon-container">
+      <ion-icon name="restaurant-outline" class="logo-icon"></ion-icon>
+    </div>
+    <div class="title-text-container">
+      <h1 class="title-order">ORDER</h1>
+      <h1 class="title-pro">PRO</h1>
+    </div>
+  </div>
+
+  <div class="nav-menu">
+    <span class="nav-item" [class.active-nav]="seccionActiva==='productos'" (click)="seleccionarSeccion('productos')">Productos</span>
+
+    <span class="nav-item" [class.active-nav]="seccionActiva==='salir'" (click)="seleccionarSeccion('salir')">Salir</span>
+  </div>
+
+  <!-- ========================= SECCIÓN PRODUCTOS ========================= -->
+  <div *ngIf="seccionActiva==='productos'">
+
+<div class="welcome-header" *ngIf="showmenu">
+    <h1>Bienvenido</h1>
+  </div>
+
+  <ion-grid *ngIf="showmenu">
+    <ion-row class="ion-align-items-center ion-justify-content-center">
+      <ion-col size="6" size-md="4" class="ion-padding">
+        <div class="action-card" (click)="takeOrder()">
+          Tomar Orden
+        </div>
+      </ion-col>
+      <ion-col size="6" size-md="4" class="ion-padding">
+        <div class="action-card" (click)="viewSummary()">
+          Resumen de órdenes
+        </div>
+      </ion-col>
+
+      <ion-col size="6" size-md="4" class="ion-padding">
+        <div class="action-card" (click)="endDay()">
+          Finalizar día
+        </div>
+      </ion-col>
+      <ion-col size="6" size-md="4" class="ion-padding">
+        <div class="action-card" (click)="endDay()">
+          Finalizar día
+        </div>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+
+
+
+ <div class="main-container" *ngIf="!showmenu">
+    
+    <div class="header">
+      <h1>Tomar Orden</h1>
+    </div>
+
+    <ion-grid class="client-table-grid">
+      <ion-row>
+        <ion-col size="6">
+          <label>Nombre del cliente</label>
+          <div class="input-container">
+            <input type="text" placeholder="Escribe el nombre">
+          </div>
+        </ion-col>
+        <ion-col size="6">
+          <label>Mesa</label>
+          <div class="input-container">
+            <input type="text" placeholder="Ej: 5">
+          </div>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+
+    <h2>Productos</h2>
+    <div class="products-section">
+      <div class="product-cards-container">
+        <div class="product-card card-tripa">
+          Tacos Tripa
+          <ion-icon name="add-circle" class="add-icon"></ion-icon>
+        </div>
+        <div class="product-card card-suadero">
+          Tacos Suadero
+          <ion-icon name="add-circle" class="add-icon"></ion-icon>
+        </div>
+        <div class="product-card card-consome">
+          Consome
+          <ion-icon name="add-circle" class="add-icon"></ion-icon>
+        </div>
+      </div>
+    </div>
+    
+    <div class="order-detail-box">
+      <h2>Detalle del pedido</h2>
+      
+      <table class="order-table">
+        <thead>
+          <tr>
+            <th class="col-nombre">Nombre</th>
+            <th class="col-cantidad">Cantidad</th>
+            <th class="col-comentarios">Comentarios</th>
+            <th class="col-precio">Precio</th>
+            <th class="col-acciones">Acciones</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Consome</td>
+            <td>3</td>
+            <td></td>
+            <td>$60</td>
+            <td class="actions-cell">
+              <ion-icon name="pencil-outline" class="edit-icon"></ion-icon>
+              <ion-icon name="trash-outline" class="delete-icon"></ion-icon>
+            </td>
+          </tr>
+          <tr class="highlight-row">
+            <td>Suadero</td>
+            <td>5</td>
+            <td>Sin cebolla</td>
+            <td>$23</td>
+            <td class="actions-cell">
+              <ion-icon name="pencil-outline" class="edit-icon"></ion-icon>
+              <ion-icon name="trash-outline" class="delete-icon"></ion-icon>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="totals-area">
+        <div class="total-row">
+          <label for="tip-input">Propina</label>
+          <div class="tip-input-container">
+            <select id="tip-input" class="tip-select">
+              <option value="0" selected></option>
+            </select>
+          </div>
+        </div>
+        <div class="total-row">
+          <span class="total-label">Total</span>
+          <span class="total-value">$249</span>
+        </div>
+      </div>
+    </div> <div class="save-button-container">
+      <button class="save-button">Guardar</button>
+    </div>
+
+  </div>
+  </div>
+
+
+  <!-- ========================= SECCIÓN SALIR ========================= -->
+  <div *ngIf="seccionActiva==='salir'">
+    <h2>Salir de la aplicación</h2>
+    <ion-button color="danger" (click)="cerrarSesion()">Cerrar sesión</ion-button>
+  </div>
+
 </ion-content>
