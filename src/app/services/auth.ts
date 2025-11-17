@@ -153,6 +153,30 @@ agregarProducto(producto: any): Observable<any> {
 }
 
 
+getPropinas() {
+  return this.http.get<any[]>(`${this.apiUrl}propinas.php`);
+}
 
+guardarOrden(data: any) {
+  return this.http.post(`${this.apiUrl}guardarOrden.php`, data);
+}
+
+
+ // Obtener todas las órdenes
+  getOrdenes(): Observable<any[]> {
+    return this.http.get<any[]>(`${this.apiUrl}/getOrdenes.php`);
+  }
+
+  // Finalizar orden
+  finalizarOrden(ordenId: number): Observable<any> {
+    return this.http.post<any>(`${this.apiUrl}/finalizarOrden.php`, { id: ordenId });
+  }
+
+
+  // Función para eliminar una orden
+eliminarOrden(ordenId: number) {
+  const url = `${this.apiUrl}/eliminarOrden.php?id=${ordenId}`;
+  return this.http.delete(url);
+}
 
 }

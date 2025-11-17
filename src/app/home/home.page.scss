@@ -134,7 +134,7 @@ ion-content {
   background-color: $main-light-gray;
   height: 100vh;
   width: 100%;
-  max-width: 800px;
+
   margin: 0 auto; 
   padding: 20px;
 }
@@ -565,7 +565,7 @@ label {
 }
 
 .input-container {
-  background-color: $color-input-bg;
+  background-color: #333;
   border-radius: 5px;
   margin-bottom: 15px;
   padding: 0;
@@ -616,16 +616,6 @@ label {
   text-align: center;
 }
 
-.add-icon {
-  position: absolute;
-  bottom: 5px;
-  right: 5px;
-  font-size: 1.4em;
-  color: $color-icon-add;
-  background-color: transparent;
-  // Simular el + más grueso con la sombra del círculo
-  filter: drop-shadow(0 0 1px rgba(0, 0, 0, 0.4));
-}
 
 .card-tripa { background-color: $color-tripa; }
 .card-suadero { background-color: $color-suadero; }
@@ -713,13 +703,14 @@ label {
     -webkit-appearance: none; // Oculta flecha por defecto
     -moz-appearance: none;
     appearance: none;
-    background: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2212%22%20height%3D%2212%22%20viewBox%3D%220%200%2012%2012%22%3E%3Cpath%20d%3D%22M10%203L6%207L2%203Z%22%20fill%3D%22%23333333%22%2F%3E%3C%2Fsvg%3E") no-repeat right 5px center;
+    background:  #fffac2 no-repeat right 5px center;
     background-size: 10px;
     text-align: right;
   }
 }
 
 .total-label {
+  color: #333;
     font-size: 1.1em;
     font-weight: 700;
 }
@@ -753,4 +744,29 @@ label {
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
   margin-top: 10px;
   width: 150px; // Ancho fijo para parecerse al diseño
+}
+
+
+
+
+.dynamic-product {
+  background-color: #fffac2; // color de fondo que quieras
+  border-radius: 10px;
+  padding: 15px;
+  text-align: center;
+  font-weight: bold;
+  margin-bottom: 10px;
+  position: relative;
+
+  
+.add-icon {
+  position: absolute;
+  bottom: 5px;
+  right: 5px;
+  font-size: 1.4em;
+  color: $color-icon-add;
+  background-color: transparent;
+  // Simular el + más grueso con la sombra del círculo
+  filter: drop-shadow(0 0 1px rgba(0, 0, 0, 0.4));
+}
 }
