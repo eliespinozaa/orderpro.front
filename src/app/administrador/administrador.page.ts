@@ -9,7 +9,6 @@ import { AlertController, ToastController } from '@ionic/angular';
   standalone: false,
 })
 export class AdministradorPage implements OnInit {
-  // ========================= PRODUCTOS =========================
   productos: any[] = [];
   nuevoProducto: any = { nombre: '', precio: 0, unidad_medida: '', tamano: '' };
   productoSeleccionado: any = null;
@@ -19,12 +18,10 @@ export class AdministradorPage implements OnInit {
 filtroProducto: string = '';
 
 
-  // ========================= EMPLEADOS =========================
   empleados: any[] = [];
   empleadoSeleccionado: any = null;
   editandoEmpleado: boolean = false;
 
-  // ========================= NAV =========================
   seccionActiva: 'productos' | 'empleados' | 'salir' = 'productos';
 
   constructor(
@@ -58,7 +55,6 @@ filtroProducto: string = '';
     if (seccion === 'empleados') this.cargarEmpleados();
   }
 
-  // ========================= PRODUCTOS =========================
 cargarProductos() {
   this.authService.getProductos().subscribe({
     next: (res) => {
@@ -168,7 +164,6 @@ async cerrarSesion() {
 
   empleadosFiltrados: any[] = [];
   filtro: string = '';
-  // ========================= EMPLEADOS =========================
  cargarEmpleados() {
     this.authService.getEmpleados().subscribe({
       next: (data) => {

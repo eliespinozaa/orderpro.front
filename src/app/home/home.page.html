@@ -11,13 +11,11 @@
   </div>
 
   <div class="nav-menu">
-    <!--<span class="nav-item" [class.active-nav]="seccionActiva==='productos'" (click)="seleccionarSeccion('productos')">Productos</span>-->
 
 
     <span class="nav-item" [class.active-nav]="seccionActiva==='salir'" (click)="seleccionarSeccion('salir')">Salir</span>
   </div>
 
-  <!-- ========================= SECCIÓN PRODUCTOS ========================= -->
   <div *ngIf="seccionActiva==='productos'">
 
 <div class="welcome-header" *ngIf="showmenu">
@@ -152,8 +150,6 @@
   </div>
   </div>
 
-<!-- ========================= SECCIÓN RESUMEN DE ÓRDENES ========================= -->
-<!-- ========================= SECCIÓN RESUMEN DE ÓRDENES ========================= -->
 <div class="main-container" *ngIf="seccionActiva==='resumen' && !showmenu">
   <div class="header">
     <h1>Resumen de Órdenes</h1>
@@ -179,7 +175,7 @@
           <ion-icon name="eye-outline" class="view-icon" (click)="verDetalle(orden)"></ion-icon>
           <ion-icon name="checkmark-circle-outline" class="finish-icon" (click)="finalizarOrden(orden)" 
                     *ngIf="orden.estatus !== 'Finalizada'"></ion-icon>
-          <!-- Botón de eliminar solo si está finalizada -->
+          
           <ion-icon name="trash-outline" class="delete-icon" (click)="eliminarOrden(orden)" 
                     *ngIf="orden.estatus === 'Finalizada'"></ion-icon>
         </td>
@@ -192,7 +188,6 @@
     </div>
 </div>
 
-  <!-- ========================= SECCIÓN SALIR ========================= -->
   <div *ngIf="seccionActiva==='salir'">
     <h2>Salir de la aplicación</h2>
     <ion-button color="danger" (click)="cerrarSesion()">Cerrar sesión</ion-button>

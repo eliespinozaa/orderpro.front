@@ -16,7 +16,6 @@
     <span class="nav-item" [class.active-nav]="seccionActiva==='salir'" (click)="seleccionarSeccion('salir')">Salir</span>
   </div>
 
-  <!-- ========================= SECCIÓN PRODUCTOS ========================= -->
   <div *ngIf="seccionActiva==='productos'">
 
     <div *ngIf="editandoProducto" class="form-card">
@@ -87,7 +86,6 @@
     </div>
   </div>
 
-  <!-- ========================= SECCIÓN EMPLEADOS ========================= -->
   <div *ngIf="seccionActiva==='empleados'">
 
     <div *ngIf="editandoEmpleado" class="form-card">
@@ -142,7 +140,6 @@
 
   </div>
 
-  <!-- ========================= SECCIÓN SALIR ========================= -->
   <div *ngIf="seccionActiva==='salir'">
     <h2>Salir de la aplicación</h2>
     <ion-button color="danger" (click)="cerrarSesion()">Cerrar sesión</ion-button>
