@@ -1,16 +1,16 @@
 import { Component, OnInit } from '@angular/core';
-import { Auth } from '../services/auth'; // importa tu servicio
+import { Auth } from '../services/auth'; 
 import { Router } from '@angular/router';
 import { AlertController, ToastController } from '@ionic/angular';
 interface OrderItem {
-  id: number;            // id del producto
-  name: string;          // nombre del producto
-  quantity: number;      // cantidad
-  comment: string;       // comentarios
-  unitPrice: number;     // precio unitario
-  price: number;         // precio total (quantity * unitPrice)
-  tamaño?: string;       // tamaño del producto (opcional)
-  unidad_medida?: string; // unidad de medida (opcional)
+  id: number;            
+  name: string;         
+  quantity: number;     
+  comment: string;       
+  unitPrice: number;     
+  price: number;         
+  tamaño?: string;       
+  unidad_medida?: string; 
 }
 
 @Component({
@@ -26,20 +26,19 @@ export class HomePage implements OnInit {
   clientName: string = '';
   tableNumber: string = '';
   tip: number = 0;
-  totalAmount: number = 0; // Se calcularía dinámicamente
+  totalAmount: number = 0;
 
-  // Datos de ejemplo para la tabla (simulando la imagen)
   orderItems: OrderItem[] = [
     
   ];
 
-  productos: any[] = []; // Aquí van los productos traídos del backend
+  productos: any[] = []; 
 
   constructor(
     private authService: Auth,
     private router: Router,
     private toastController: ToastController,
-    private alertController: AlertController// Nuevo servicio
+    private alertController: AlertController
   ) {}
 
   ngOnInit() {
@@ -65,13 +64,11 @@ export class HomePage implements OnInit {
 addProductToOrder(product: any) {
   const index = this.orderItems.findIndex(item => item.name === product.nombre);
   if (index >= 0) {
-    // Si ya existe, solo sumamos cantidad y recalculamos precio
     this.orderItems[index].quantity++;
     this.orderItems[index].price = this.orderItems[index].quantity * this.orderItems[index].unitPrice;
   } else {
-    // Si no existe, lo agregamos como nuevo
    this.orderItems.push({
-  id: product.id, // <--- importante para guardar en orden_productos
+  id: product.id,
   name: product.nombre,
   quantity: 1,
   comment: '',
@@ -165,12 +162,10 @@ this.tip=0;
   }
 
 
-  // --- Funciones de Acción ---
 
  
   editItem(index: number) {
     console.log("Editando ítem en el índice: ${index}");
-    // Aquí abrirías un modal o formulario para editar el OrderItem
   }
 
   removeItem(index: number) {
@@ -180,17 +175,12 @@ this.tip=0;
   }
 
  calculateTotal() {
-  // Calculamos subtotal
   let subtotal = this.orderItems.reduce((sum, item) => sum + item.price, 0);
 
-  // Convertimos la propina en porcentaje
-  // this.tip = 10 significa 10%
   let tipAmount = subtotal * (this.tip / 100);
 
-  // Total = subtotal + propina
   this.totalAmount = subtotal + tipAmount;
 
-  // Opcional: redondear a 2 decimales
   this.totalAmount = parseFloat(this.totalAmount.toFixed(2));
 }
 
@@ -203,7 +193,7 @@ saveOrder() {
     table: this.tableNumber,
     items: this.orderItems,
     tip: this.tip,
-    subtotal: subtotal,       // <-- aquí
+    subtotal: subtotal,       
     total: this.totalAmount,
     propina_id: this.propinas.find(p => p.cantidad_porcentaje === this.tip)?.id,
     empleado_id: this.authService.getEmpleado()?.id
@@ -213,7 +203,7 @@ saveOrder() {
     next: (res) => {
       console.log("Orden guardada:", res);
       this.presentToast("Orden guardada correctamente", "success");
-      this.orderItems = []; // limpiar tabla
+      this.orderItems = []; 
       this.showmenu = true;
     },
     error: (err) => {
@@ -226,14 +216,13 @@ saveOrder() {
 
 
 
-  propinas: any[] = []; // aquí se guardarán las propinas del backend
+  propinas: any[] = []; 
 
 
   cargarPropinas() {
   this.authService.getPropinas().subscribe({
     next: (data) => {
       this.propinas = data;
-      // Opcional: seleccionar por defecto la primera propina
       if (this.propinas.length > 0) {
         this.tip = this.propinas[0].cantidad_porcentaje;
         this.calculateTotal();
@@ -265,11 +254,9 @@ cargarOrdenes() {
 
 verDetalle(orden: any) {
   console.log('Ver detalle de la orden:', orden);
-  // Aquí podrías abrir un modal con productos y complementos
 }
 
 finalizarOrden(orden: any) {
-  // Llamar API para cambiar estatus a "Finalizada"
   this.authService.finalizarOrden(orden.id).subscribe({
     next: () => {
       orden.estatus = 'Finalizada';

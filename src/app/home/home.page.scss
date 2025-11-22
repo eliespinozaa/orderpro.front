@@ -442,7 +442,6 @@ tbody tr {
 
 
 ion-content {
-  // Color de fondo del contenedor principal (el área que contiene todo)
   --background: #fdfaf5; 
   padding: 20px;
 }
@@ -460,27 +459,22 @@ ion-content {
 }
 
 .action-card {
-  // Estilo del "botón"
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 150px; // Altura fija para hacerlos cuadrados o rectangulares
+  height: 150px; 
   width: 100%;
   
-  // Color de fondo claro (crema/beige muy suave)
   background-color: #f7f6f1; 
   
-  // Bordes redondeados y sombra para dar efecto de "elevación"
   border-radius: 10px;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
   
-  // Estilo del texto
   font-size: 1.1em;
   font-weight: 500;
-  color: #333; // Texto oscuro
+  color: #333; 
   text-align: center;
   
-  // Efecto visual al pasar el ratón o tocar (opcional, mejora UX)
   transition: transform 0.2s, box-shadow 0.2s;
   cursor: pointer;
 
@@ -490,16 +484,14 @@ ion-content {
   }
 }
 
-// Centrar la rejilla en pantallas grandes
 ion-grid {
   max-width: 600px;
   margin: 0 auto;
 }
 
-// Estilo para el contenedor general que simula el marco exterior de la imagen
 .ion-page {
-  background: #e8e6e0; // Color del marco exterior
-  padding: 15px; // Espaciado del marco
+  background: #e8e6e0; 
+  padding: 15px; 
   border-radius: 20px;
   box-sizing: border-box;
 }
@@ -508,21 +500,18 @@ ion-grid {
 
 
 
-// Paleta de colores ajustada al diseño
-$color-header: #5d4a31;       // Marrón oscuro para "Tomar Orden"
-$color-background-outer: #e8e6e0; // Fondo exterior (marco)
-$color-background-inner: #fdfaf5; // Fondo principal del contenedor
-$color-input-bg: #f7f6f1;       // Fondo de inputs
-$color-input-text: #666;        // Texto placeholder
-$color-highlight-row: #fffac2;  // Fondo de la fila de "Suadero"
+$color-header: #5d4a31;      
+$color-background-outer: #e8e6e0; 
+$color-background-inner: #fdfaf5; 
+$color-input-bg: #f7f6f1;       
+$color-input-text: #666;       
+$color-highlight-row: #fffac2;
 
-// Colores de las tarjetas de producto
-$color-tripa: #9acd6a;    // Verde oliva
-$color-suadero: #6acdaf;  // Azul turquesa
-$color-consome: #d8c29e;  // Beige claro
-$color-guardar: #fce899;  // Amarillo pastel para "Guardar"
+$color-tripa: #9acd6a;    
+$color-suadero: #6acdaf; 
+$color-consome: #d8c29e; 
+$color-guardar: #fce899; 
 
-// Icono de acción (color del +)
 $color-icon-add: #333; 
 
 
@@ -534,13 +523,12 @@ $color-icon-add: #333;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
 }
 
-// --- Encabezados ---
 .header {
   text-align: center;
   margin-bottom: 25px;
 
   h1 {
-    font-family: serif; // Usar una fuente con serifa o similar al diseño
+    font-family: serif; 
     font-size: 1.9em;
     font-weight: 600;
     color: $color-header;
@@ -555,7 +543,6 @@ h2 {
   color: #333;
 }
 
-// --- Cliente y Mesa ---
 label {
   display: block;
   font-weight: 500;
@@ -587,11 +574,9 @@ label {
   }
 }
 
-// --- Productos ---
 .product-cards-container {
   display: flex;
   gap: 15px;
-  // Permite el scroll horizontal en móvil si se necesita
   overflow-x: auto; 
   flex-wrap: nowrap;
   padding-bottom: 5px; 
@@ -610,7 +595,7 @@ label {
   border: none;
   color: #333;
   font-weight: 500;
-  box-shadow: 0 4px 5px rgba(0, 0, 0, 0.1); // Sombra más marcada
+  box-shadow: 0 4px 5px rgba(0, 0, 0, 0.1); 
   cursor: pointer;
   position: relative;
   text-align: center;
@@ -629,12 +614,12 @@ label {
   border-radius: 10px;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
   margin-bottom: 20px;
-  overflow-x: auto; // Responsividad para la tabla
+  overflow-x: auto; 
 }
 
 .order-table {
   width: 100%;
-  min-width: 500px; // Evita que se colapsen las columnas en móvil
+  min-width: 500px; 
   border-collapse: collapse;
   font-size: 0.9em;
 
@@ -642,19 +627,19 @@ label {
     padding: 8px 5px;
     text-align: left;
     border-bottom: 1px solid #f0f0f0;
-    white-space: nowrap; // No envuelve el texto
+    white-space: nowrap; 
   }
   
   th {
     font-weight: 600;
-    color: #333; // Color oscuro
+    color: #333; 
     background-color: transparent;
     padding-bottom: 10px;
-    border-bottom: 3px solid #f0f0f0; // Línea más gruesa bajo encabezado
+    border-bottom: 3px solid #f0f0f0; 
   }
   
   .highlight-row {
-    background-color: $color-highlight-row; // Fila amarilla
+    background-color: $color-highlight-row; 
   }
 
   .actions-cell {
@@ -664,12 +649,11 @@ label {
       margin-left: 8px;
       cursor: pointer;
     }
-    .edit-icon { color: #5d4a31; } // Marrón oscuro
-    .delete-icon { color: #cc0000; } // Rojo
+    .edit-icon { color: #5d4a31; }
+    .delete-icon { color: #cc0000; } 
   }
 }
 
-// --- Totales ---
 .totals-area {
   display: flex;
   flex-direction: column;
@@ -692,15 +676,15 @@ label {
 }
 
 .tip-input-container {
-  @extend .input-container; // Hereda el estilo del input
-  background-color: #fffac2; // Fondo amarillo
+  @extend .input-container; 
+  background-color: #fffac2; 
   width: 120px;
   height: 35px;
   padding: 0 5px;
   
   .tip-select {
     color: #333;
-    -webkit-appearance: none; // Oculta flecha por defecto
+    -webkit-appearance: none;
     -moz-appearance: none;
     appearance: none;
     background:  #fffac2 no-repeat right 5px center;
@@ -719,14 +703,13 @@ label {
   font-size: 1.3em;
   font-weight: 700;
   color: $color-header;
-  background-color: $color-highlight-row; // Fondo amarillo del total
+  background-color: $color-highlight-row; 
   padding: 3px 10px;
   border-radius: 5px;
   min-width: 80px;
   text-align: right;
 }
 
-// --- Botón Guardar ---
 .save-button-container {
     display: flex;
     justify-content: flex-end;
@@ -743,14 +726,14 @@ label {
   cursor: pointer;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
   margin-top: 10px;
-  width: 150px; // Ancho fijo para parecerse al diseño
+  width: 150px;
 }
 
 
 
 
 .dynamic-product {
-  background-color: #fffac2; // color de fondo que quieras
+  background-color: #fffac2; 
   border-radius: 10px;
   padding: 15px;
   text-align: center;
@@ -766,7 +749,6 @@ label {
   font-size: 1.4em;
   color: $color-icon-add;
   background-color: transparent;
-  // Simular el + más grueso con la sombra del círculo
   filter: drop-shadow(0 0 1px rgba(0, 0, 0, 0.4));
 }
 }

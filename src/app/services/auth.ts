@@ -126,7 +126,6 @@ editarProducto(producto: any): Observable<any> {
     catchError(err => throwError(() => new Error(err.error?.error || err.message || 'Error desconocido')))
   );
 }
-// dentro de Auth
 eliminarProducto(id: number): Observable<any> {
   return this.http.post<any>(`${this.apiUrl}eliminar-producto.php`, { id }).pipe(
     map(response => {
@@ -162,18 +161,15 @@ guardarOrden(data: any) {
 }
 
 
- // Obtener todas las órdenes
   getOrdenes(): Observable<any[]> {
     return this.http.get<any[]>(`${this.apiUrl}/getOrdenes.php`);
   }
 
-  // Finalizar orden
   finalizarOrden(ordenId: number): Observable<any> {
     return this.http.post<any>(`${this.apiUrl}/finalizarOrden.php`, { id: ordenId });
   }
 
 
-  // Función para eliminar una orden
 eliminarOrden(ordenId: number) {
   const url = `${this.apiUrl}/eliminarOrden.php?id=${ordenId}`;
   return this.http.delete(url);
