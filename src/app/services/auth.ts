@@ -175,4 +175,14 @@ eliminarOrden(ordenId: number) {
   return this.http.delete(url);
 }
 
+
+  getComplementos() {
+    return this.http.get(`${this.apiUrl}getcomplementos.php`);
+  }
+ getOrdenById(id: number) {
+  return this.http.get(`${this.apiUrl}getOrdenesextras.php?id=${id}`);
+}
+
+
+
 }

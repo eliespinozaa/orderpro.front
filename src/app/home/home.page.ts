@@ -1,8 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { Auth } from '../services/auth'; 
 import { Router } from '@angular/router';
-import { AlertController, ToastController } from '@ionic/angular';
+import { AlertController, ModalController, ToastController } from '@ionic/angular';
 interface OrderItem {
+
   id: number;            
   name: string;         
   quantity: number;     
@@ -10,7 +11,9 @@ interface OrderItem {
   unitPrice: number;     
   price: number;         
   tamaño?: string;       
-  unidad_medida?: string; 
+  unidad_medida?: string;
+  complementos?:any ;
+  isExtra: boolean;
 }
 
 @Component({
@@ -38,7 +41,8 @@ export class HomePage implements OnInit {
     private authService: Auth,
     private router: Router,
     private toastController: ToastController,
-    private alertController: AlertController
+    private alertController: AlertController,
+    private modalCtrl: ModalController
   ) {}
 
   ngOnInit() {
@@ -49,6 +53,7 @@ export class HomePage implements OnInit {
     this.calculateTotal();
     this.cargarProductos();
      this.cargarPropinas();
+      this.loadComplementos();
   }
 
   cargarProductos() {
@@ -61,25 +66,53 @@ export class HomePage implements OnInit {
     });
   }
 
-addProductToOrder(product: any) {
-  const index = this.orderItems.findIndex(item => item.name === product.nombre);
-  if (index >= 0) {
-    this.orderItems[index].quantity++;
-    this.orderItems[index].price = this.orderItems[index].quantity * this.orderItems[index].unitPrice;
-  } else {
-   this.orderItems.push({
-  id: product.id,
-  name: product.nombre,
-  quantity: 1,
-  comment: '',
-  unitPrice: Number(product.precio),
-  price: Number(product.precio),
-  tamaño: product.tamaño,
-  unidad_medida: product.unidad_medida
-});
 
-  }
+
+async agregarComplementos(index: number) {
+  const item = this.orderItems[index];
+
+  const alert = await this.alertController.create({
+    header: 'Agregar complementos',
+    inputs: this.complementos.map(comp => ({
+      type: 'checkbox',
+      label: `${comp.nombre} (+$${comp.precio})`,
+      value: comp.id,
+      checked: (item.complementos ?? []).some((c: any) => c.id === comp.id)
+
+    })),
+    buttons: [
+      { text: 'Cancelar', role: 'cancel' },
+      {
+        text: 'Agregar',
+      handler: (selectedIds) => {
+
+  // Asegurar que selectedIds sea SIEMPRE array
+  const ids = Array.isArray(selectedIds) ? selectedIds : [selectedIds];
+
+  // Convertir IDs seleccionados → objetos completos
+  const nuevosComp = ids.map(id => {
+    const c = this.complementos.find(co => co.id === id);
+    return {
+      id: c.id,
+      nombre: c.nombre,
+      precio: Number(c.precio)
+    };
+  });
+
+  item.complementos = nuevosComp;
+
+  const totalComp = nuevosComp.reduce((s, c) => s + Number(c.precio), 0);
+
+  item.price = (item.unitPrice + totalComp) * item.quantity;
+
   this.calculateTotal();
+}
+
+      }
+    ]
+  });
+
+  await alert.present();
 }
 
 
@@ -148,13 +181,19 @@ addProductToOrder(product: any) {
   
 
   showmenu=true;
-  takeOrder() {
-    this.clientName='';
-    this.tableNumber='';
-this.totalAmount=0.00;
-this.tip=0;
-    this.showmenu=false
-  }
+  always = true;
+ takeOrder() {
+  this.clientName = '';
+  this.tableNumber = '';
+  this.totalAmount = 0.00;
+  this.tip = 0;
+  this.orderItems = [];
+  this.isNewOrder = true;
+  this.showmenu = false;
+  this.mostrarPropina = false;
+  this.selectedComplementos = [];
+}
+
 
 
   endDay() {
@@ -164,12 +203,41 @@ this.tip=0;
 
 
  
-  editItem(index: number) {
-    console.log("Editando ítem en el índice: ${index}");
-  }
+  async editItem(index: number) {
+  const item = this.orderItems[index];
+
+  const alert = await this.alertController.create({
+    header: 'Editar comentario',
+    inputs: [
+      {
+        name: 'comment',
+        type: 'text',
+        placeholder: 'Escribe un comentario',
+        value: item.comment || ''
+      }
+    ],
+    buttons: [
+      {
+        text: 'Cancelar',
+        role: 'cancel'
+      },
+      {
+        text: 'Guardar',
+     handler: (data) => {
+  this.orderItems[index].comment = data.comment;
+  this.calculateTotal();
+  this.presentToast('Comentario actualizado', 'success');
+}
+
+      }
+    ]
+  });
+
+  await alert.present();
+}
+
 
   removeItem(index: number) {
-    console.log("Eliminando ítem en el índice: ${index}");
     this.orderItems.splice(index, 1);
     this.calculateTotal();
   }
@@ -185,25 +253,38 @@ this.tip=0;
 }
 
 
+
 saveOrder() {
   const subtotal = this.orderItems.reduce((sum, item) => sum + item.price, 0);
 
-  const orderData = {
+  const orderData: any = {
     client: this.clientName,
     table: this.tableNumber,
-    items: this.orderItems,
+    items: this.orderItems.map(i => ({
+      id:  i.id,
+      name: i.name,
+      quantity: i.quantity,
+      comment: i.comment,
+      unitPrice: i.unitPrice,
+      price: i.price,
+      complementos: i.complementos ?? []
+    })),
     tip: this.tip,
-    subtotal: subtotal,       
+    subtotal: subtotal,
     total: this.totalAmount,
     propina_id: this.propinas.find(p => p.cantidad_porcentaje === this.tip)?.id,
     empleado_id: this.authService.getEmpleado()?.id
   };
 
+  if (!this.isNewOrder && this.currentOrderId) {
+    orderData.id = this.currentOrderId;
+  }
+
   this.authService.guardarOrden(orderData).subscribe({
     next: (res) => {
       console.log("Orden guardada:", res);
       this.presentToast("Orden guardada correctamente", "success");
-      this.orderItems = []; 
+      this.orderItems = [];
       this.showmenu = true;
     },
     error: (err) => {
@@ -212,6 +293,7 @@ saveOrder() {
     }
   });
 }
+
 
 
 
@@ -252,9 +334,7 @@ cargarOrdenes() {
   });
 }
 
-verDetalle(orden: any) {
-  console.log('Ver detalle de la orden:', orden);
-}
+
 
 finalizarOrden(orden: any) {
   this.authService.finalizarOrden(orden.id).subscribe({
@@ -277,9 +357,201 @@ eliminarOrden(orden: any) {
 }
 
 backToMenu() {
-  this.showmenu = true;
-  this.seccionActiva = 'productos'
+  this.clientName = '';
+  this.tableNumber = '';
+  this.tip = 0;
+  this.totalAmount = 0;
+  this.orderItems = [];
+  this.isNewOrder = true; 
+  this.showmenu = true;  
+  this.seccionActiva = 'productos'; 
+  this.mostrarPropina = false; 
+  this.selectedComplementos = []; 
+}
 
+
+mostrarPropina=false;
+
+ complementos: any[] = [];
+  selectedComplementos: number[] = [];
+
+  loadComplementos() {
+    this.authService.getComplementos().subscribe((resp: any) => {
+      this.complementos = resp;
+    });
+  }
+
+  toggleComplement(id: number) {
+    if (this.selectedComplementos.includes(id)) {
+      this.selectedComplementos = this.selectedComplementos.filter(c => c !== id);
+    } else {
+      this.selectedComplementos.push(id);
+    }
+  }
+
+
+  verDetalle(orden: any) {
+  this.authService.getOrdenById(orden.id).subscribe({
+    next: (data) => {
+      this.precargarOrden(data);
+    },
+    error: (err) => console.error("Error al cargar detalle", err)
+  });
+}
+
+
+
+addProductToOrder(product: any) {
+  const index = this.orderItems.findIndex(item =>
+    item.id === product.id &&
+    JSON.stringify(item.complementos || []) === JSON.stringify(product.complementos || [])
+  );
+
+  if (index >= 0) {
+    this.orderItems[index].quantity++;
+    const compTotal = (this.orderItems[index].complementos || []).reduce(
+      (s: number, c: any) => s + Number(c.precio),
+      0
+    );
+    this.orderItems[index].price =
+      (this.orderItems[index].unitPrice + compTotal) * this.orderItems[index].quantity;
+  } else {
+    // Nuevo producto
+    this.orderItems.push({
+      id: product.id,
+      name: product.nombre,
+      quantity: 1,
+      comment: '',
+      unitPrice: Number(product.precio),
+      price: Number(product.precio),
+      tamaño: product.tamaño,
+      unidad_medida: product.unidad_medida,
+      complementos: product.complementos ? [...product.complementos] : [],
+      isExtra: this.isNewOrder ? false : true 
+    });
+  }
+
+  this.calculateTotal();
+  this.updateHasExtras(); 
+}
+
+hasExtras: boolean = false;
+
+updateHasExtras() {
+  this.hasExtras = this.orderItems.some(item => item.isExtra);
+}
+
+
+isNewOrder: boolean = true; 
+currentOrderId: number | null = null;
+
+precargarOrden(orden: any) {
+  this.showmenu = false;
+  this.seccionActiva = 'productos';
+  this.clientName = orden.client;
+  this.tableNumber = orden.mesa;
+  this.tip = orden.tip;
+
+  this.orderItems = orden.items.map((i: any) => ({
+    id: i.producto_id ?? i.id,
+    name: i.nombre,
+    quantity: i.quantity,
+    comment: i.comment,
+    unitPrice: Number(i.unitPrice),
+    price: Number(i.price),
+    complementos: i.complementos 
+      ? i.complementos.map((c: any) => ({
+          id: c.complemento_id ?? c.id,
+          nombre: c.nombre,
+          precio: Number(c.precio)
+        }))
+      : [],
+    isExtra: i.isExtra ?? false   
+  }));
+
+  this.isNewOrder = false;
+  this.currentOrderId = orden.id;
+  this.calculateTotal();
+  this.updateHasExtras(); 
+}
+
+
+
+
+
+currentPaymentOrder: any = null;
+mostrarDetallePago: boolean = false;
+
+showPaymentDetails(orden: any) {
+  this.always = false;
+  this.authService.getOrdenById(orden.id).subscribe({
+    next: (fullOrder: any) => {
+
+      const items = Array.isArray(fullOrder?.items) ? fullOrder.items : [];
+
+      this.currentPaymentOrder = {
+        id: fullOrder.id,
+        client: fullOrder?.client ?? 'Sin nombre',
+        table: fullOrder?.mesa ?? 'Sin mesa',
+        items: items.map((i: any) => ({
+          id: i?.producto_id ?? i?.item_id ?? 0,
+          name: i?.nombre ?? 'Sin nombre',
+          quantity: Number(i?.quantity ?? 0),
+          comment: i?.comment ?? '',
+          unitPrice: Number(i?.unitPrice ?? 0),
+          price: Number(i?.price ?? 0),
+          complementos: Array.isArray(i?.complementos) ? i.complementos.map((c: any) => ({
+            nombre: c.nombre,
+            precio: Number(c.precio ?? 0)
+          })) : [],
+          isExtra: i?.isExtra ?? false
+        })),
+        tip: Number(fullOrder?.tip ?? 0),
+        totalAmount: Number(fullOrder?.total ?? 0) 
+      };
+
+      this.mostrarDetallePago = true;
+    },
+    error: (err) => console.error("Error al cargar detalle", err)
+  });
+}
+
+
+
+
+calculatePaymentTotal() {
+  if (!this.currentPaymentOrder) return;
+
+  const subtotal = this.currentPaymentOrder.items.reduce((sum: number, i: any) => {
+    const complementosTotal = i.complementos.reduce((cSum: number, c: any) => cSum + c.precio, 0);
+    return sum + (i.unitPrice + complementosTotal) * i.quantity;
+  }, 0);
+
+  const tipAmount = subtotal * (this.currentPaymentOrder.tip / 100);
+  this.currentPaymentOrder.totalAmount = parseFloat((subtotal + tipAmount).toFixed(2));
+}
+
+
+updateTip(value: number) {
+  if (!this.currentPaymentOrder) return;
+  this.currentPaymentOrder.tip = value;
+  this.calculatePaymentTotal();
+}
+
+finishPayment() {
+  if (!this.currentPaymentOrder) return;
+
+  this.finalizarOrden(this.currentPaymentOrder);
+  this.currentPaymentOrder = null;
+  this.always=true
+this.cargarOrdenes();
+  this.mostrarDetallePago = false;
+}
+canceled(){
+  this.mostrarDetallePago=false
+   this.always = true
+   this.seccionActiva ='resumen';
+   this.showmenu= false;
 }
 
 

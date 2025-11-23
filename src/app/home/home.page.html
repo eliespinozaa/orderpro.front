@@ -40,17 +40,17 @@
           Finalizar día
         </div>
       </ion-col>
-      <ion-col size="6" size-md="4" class="ion-padding">
+     <!-- <ion-col size="6" size-md="4" class="ion-padding">
         <div class="action-card" (click)="endDay()">
           Finalizar día
         </div>
-      </ion-col>
+      </ion-col>-->
     </ion-row>
   </ion-grid>
 
 
 
- <div class="main-container" *ngIf="!showmenu">
+ <div class="main-container" *ngIf="!showmenu && always">
     
     <div class="header">
       <h1>Tomar Orden</h1>
@@ -91,36 +91,84 @@
   </div>
 </div>
 
+
+
+
+
     
 <div class="order-detail-box">
   <h2>Detalle del pedido</h2>
   
-  <table class="order-table">
-    <thead>
-      <tr>
-        <th class="col-nombre">Nombre</th>
-        <th class="col-cantidad">Cantidad</th>
-        <th class="col-comentarios">Comentarios</th>
-        <th class="col-precio">Precio</th>
-        <th class="col-acciones">Acciones</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr *ngFor="let item of orderItems; let i = index" [class.highlight-row]="i % 2 === 1">
-        <td>{{ item.name }}</td>
+<table class="order-table">
+  <thead>
+    <tr>
+      <th class="col-nombre">Nombre</th>
+      <th class="col-cantidad">Cantidad</th>
+      <th class="col-comentarios">Comentarios</th>
+      <th class="col-precio">Precio</th>
+      <th class="col-acciones">Acciones</th>
+    </tr>
+  </thead>
+  <tbody>
+
+    <!-- Productos originales -->
+    <ng-container *ngFor="let item of orderItems; let i = index">
+      <tr *ngIf="!item.isExtra" [class.highlight-row]="i % 2 === 1">
+        <td>
+          {{ item.name }}
+          <div *ngIf="item.complementos?.length > 0" style="font-size: 12px; color: gray;">
+            <span *ngFor="let comp of item.complementos">
+              • {{ comp.nombre }} (+${{ comp.precio }})<br>
+            </span>
+          </div>
+        </td>
         <td>{{ item.quantity }}</td>
         <td>{{ item.comment }}</td>
         <td>${{ item.price }}</td>
         <td class="actions-cell">
+          <ion-icon name="add-circle-outline" class="add-icon" (click)="agregarComplementos(i)"></ion-icon>
           <ion-icon name="pencil-outline" class="edit-icon" (click)="editItem(i)"></ion-icon>
           <ion-icon name="trash-outline" class="delete-icon" (click)="removeItem(i)"></ion-icon>
         </td>
       </tr>
-    </tbody>
-  </table>
+    </ng-container>
+
+    <!-- Separador para extras -->
+   <tr *ngIf="hasExtras">
+
+      <td colspan="5" style="text-align: center; font-weight: bold; color: green;">
+        Extras
+      </td>
+    </tr>
+
+    <!-- Productos agregados como extras -->
+    <ng-container *ngFor="let item of orderItems; let i = index">
+      <tr *ngIf="item.isExtra" [class.highlight-row]="i % 2 === 1">
+        <td>
+          {{ item.name }}
+          <div *ngIf="item.complementos?.length > 0" style="font-size: 12px; color: gray;">
+            <span *ngFor="let comp of item.complementos">
+              • {{ comp.nombre }} (+${{ comp.precio }})<br>
+            </span>
+          </div>
+        </td>
+        <td>{{ item.quantity }}</td>
+        <td>{{ item.comment }}</td>
+        <td>${{ item.price }}</td>
+        <td class="actions-cell">
+          <ion-icon name="add-circle-outline" class="add-icon" (click)="agregarComplementos(i)"></ion-icon>
+          <ion-icon name="pencil-outline" class="edit-icon" (click)="editItem(i)"></ion-icon>
+          <ion-icon name="trash-outline" class="delete-icon" (click)="removeItem(i)"></ion-icon>
+        </td>
+      </tr>
+    </ng-container>
+
+  </tbody>
+</table>
+
 
   <div class="totals-area">
-    <div class="total-row">
+    <div class="total-row"  *ngIf="mostrarPropina">
       <label for="tip-input">Propina</label>
       <div class="tip-input-container">
     <select id="tip-input" class="tip-select" [(ngModel)]="tip" (change)="calculateTotal()">
@@ -140,6 +188,10 @@
     </div>
   </div>
 </div>
+
+<!-- SECCIÓN DETALLE DE PAGO -->
+
+
     
 <div class="save-button-container">
    <button class="save-button" (click)="backToMenu()">Volver</button>
@@ -150,7 +202,7 @@
   </div>
   </div>
 
-<div class="main-container" *ngIf="seccionActiva==='resumen' && !showmenu">
+<div class="main-container" *ngIf="seccionActiva==='resumen' && !showmenu && always">
   <div class="header">
     <h1>Resumen de Órdenes</h1>
   </div>
@@ -171,14 +223,25 @@
         <td>{{ orden.mesa }}</td>
         <td>{{ orden.estatus }}</td>
         <td>${{ orden.total }}</td>
-        <td class="actions-cell">
-          <ion-icon name="eye-outline" class="view-icon" (click)="verDetalle(orden)"></ion-icon>
-          <ion-icon name="checkmark-circle-outline" class="finish-icon" (click)="finalizarOrden(orden)" 
-                    *ngIf="orden.estatus !== 'Finalizada'"></ion-icon>
-          
-          <ion-icon name="trash-outline" class="delete-icon" (click)="eliminarOrden(orden)" 
-                    *ngIf="orden.estatus === 'Finalizada'"></ion-icon>
-        </td>
+     <td class="actions-cell">
+  <ion-button *ngIf="orden.estatus === 'En proceso'" fill="outline" size="small" color="primary" (click)="verDetalle(orden)">
+    <ion-icon slot="start" name="eye-outline"></ion-icon>
+    Extras
+  </ion-button>
+
+ <ion-button *ngIf="orden.estatus !== 'Finalizada'" fill="outline" size="small" color="success" (click)="showPaymentDetails(orden)">
+  <ion-icon slot="start" name="checkmark-circle-outline"></ion-icon>
+  Cobrar
+</ion-button>
+
+
+  <ion-button *ngIf="orden.estatus === 'Finalizada'" fill="outline" size="small" color="danger" (click)="eliminarOrden(orden)">
+    <ion-icon slot="start" name="trash-outline"></ion-icon>
+    Eliminar
+  </ion-button>
+</td>
+
+
       </tr>
     </tbody>
   </table>
@@ -192,5 +255,69 @@
     <h2>Salir de la aplicación</h2>
     <ion-button color="danger" (click)="cerrarSesion()">Cerrar sesión</ion-button>
   </div>
+
+<div *ngIf="mostrarDetallePago" class="payment-section ion-padding">
+  <ion-card color="light">
+    <ion-card-header>
+      <ion-card-title class="ion-text-center">
+        Resumen de la orden
+      </ion-card-title>
+      <ion-card-subtitle class="ion-text-center">
+        Cliente: {{ currentPaymentOrder.client || 'Sin nombre' }} - Mesa: {{ currentPaymentOrder.table || 'Sin mesa' }}
+      </ion-card-subtitle>
+    </ion-card-header>
+
+    <ion-card-content>
+      <ion-grid>
+        <ion-row class="ion-text-bold ion-padding">
+          <ion-col size="5">Producto</ion-col>
+          <ion-col size="2">Cantidad</ion-col>
+          <ion-col size="5">Complementos / Precio</ion-col>
+        </ion-row>
+
+        <ion-row *ngFor="let item of currentPaymentOrder.items" class="ion-padding">
+          <ion-col size="5">
+            {{ item.name }}
+          </ion-col>
+          <ion-col size="2">
+            {{ item.quantity }}
+          </ion-col>
+          <ion-col size="5">
+            <div *ngFor="let c of item.complementos">
+              • {{ c.nombre }} (+${{ c.precio }})
+            </div>
+            <div class="ion-text-end">
+              <strong>${{ item.price }}</strong>
+            </div>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+
+      <ion-item lines="full" color="light">
+        <ion-label>Propina</ion-label>
+        <ion-select [(ngModel)]="currentPaymentOrder.tip" (ionChange)="updateTip(currentPaymentOrder.tip)">
+          <ion-select-option [value]="0">0%</ion-select-option>
+          <ion-select-option *ngFor="let p of propinas" [value]="p.cantidad_porcentaje">
+            {{ p.cantidad_porcentaje }}%
+          </ion-select-option>
+        </ion-select>
+      </ion-item>
+
+      <ion-item lines="none" class="ion-text-end ion-padding" color="light">
+        <strong>Total a pagar: ${{ currentPaymentOrder.totalAmount }}</strong>
+      </ion-item>
+
+      <ion-row class="ion-justify-content-center ion-padding">
+        <ion-col size="6" size-sm="4">
+          <ion-button expand="block" color="success" (click)="finishPayment()">Pagar</ion-button>
+        </ion-col>
+        <ion-col size="6" size-sm="4">
+          <ion-button expand="block" color="medium" (click)="canceled()">Cancelar</ion-button>
+        </ion-col>
+      </ion-row>
+    </ion-card-content>
+  </ion-card>
+</div>
+
 
 </ion-content>
