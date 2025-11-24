@@ -10,11 +10,14 @@
     </div>
   </div>
 
-  <div class="nav-menu">
-    <span class="nav-item" [class.active-nav]="seccionActiva==='productos'" (click)="seleccionarSeccion('productos')">Productos</span>
-    <span class="nav-item" [class.active-nav]="seccionActiva==='empleados'" (click)="seleccionarSeccion('empleados')">Empleados</span>
-    <span class="nav-item" [class.active-nav]="seccionActiva==='salir'" (click)="seleccionarSeccion('salir')">Salir</span>
-  </div>
+ <div class="nav-menu">
+  <span class="nav-item" [class.active-nav]="seccionActiva==='productos'" (click)="seleccionarSeccion('productos')">Productos</span>
+  <span class="nav-item" [class.active-nav]="seccionActiva==='empleados'" (click)="seleccionarSeccion('empleados')">Empleados</span>
+  <span class="nav-item" [class.active-nav]="seccionActiva==='complementos'" (click)="seleccionarSeccion('complementos')">Complementos</span>
+  <span class="nav-item" [class.active-nav]="seccionActiva==='propinas'" (click)="seleccionarSeccion('propinas')">Propinas</span>
+  <span class="nav-item" [class.active-nav]="seccionActiva==='salir'" (click)="seleccionarSeccion('salir')">Salir</span>
+</div>
+
 
   <div *ngIf="seccionActiva==='productos'">
 
@@ -139,6 +142,116 @@
     </div>
 
   </div>
+
+  <div *ngIf="seccionActiva==='complementos'">
+
+  <div *ngIf="editandoComplemento" class="form-card">
+    <h2 class="form-title">{{ complementoSeleccionado?.id ? 'Editar' : 'Agregar' }}</h2>
+
+    <div class="form-grid">
+      <div class="form-field">
+        <p class="field-label">Nombre</p>
+        <ion-input class="custom-input" [(ngModel)]="complementoSeleccionado.nombre"></ion-input>
+      </div>
+
+      <div class="form-field">
+        <p class="field-label">Precio</p>
+        <ion-input type="number" class="custom-input" [(ngModel)]="complementoSeleccionado.precio"></ion-input>
+      </div>
+    </div>
+
+    <div class="button-group">
+      <ion-button fill="clear" class="cancel-button" (click)="cancelarEdicionComplemento()">Cancelar</ion-button>
+      <ion-button class="save-button" (click)="guardarComplemento()">
+        {{ complementoSeleccionado?.id ? 'Actualizar' : 'Guardar' }}
+      </ion-button>
+    </div>
+  </div>
+
+  <div *ngIf="!editandoComplemento" class="table-container">
+
+    <div class="form-container">
+      <p class="input-label">Complemento</p>
+      <div class="input-button-group">
+        <ion-input class="product-input" [(ngModel)]="filtroComplemento" (ionInput)="filtrarComplementos()"></ion-input>
+
+        <ion-button class="add-button" shape="round" (click)="nuevoComplementoUI()">
+          <ion-icon class="pi pi-plus-circle"></ion-icon>Agregar
+        </ion-button>
+      </div>
+    </div>
+
+    <table>
+      <thead>
+        <tr>
+          <th>Nombre</th>
+          <th>Precio</th>
+          <th>Acciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let c of complementosFiltrados">
+          <td>{{ c.nombre }}</td>
+          <td>{{ c.precio | currency:'MXN' }}</td>
+          <td class="action-icons">
+            <i class="pi pi-pencil edit-icon" (click)="editarComplementoUI(c)"></i>
+            <i class="pi pi-trash delete-icon" (click)="eliminarComplemento(c.id)"></i>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+
+  </div>
+</div>
+
+<div *ngIf="seccionActiva==='propinas'">
+
+  <div *ngIf="editandoPropina" class="form-card">
+    <h2 class="form-title">Editar propina</h2>
+
+    <div class="form-grid">
+      <div class="form-field">
+        <p class="field-label">% Porcentaje</p>
+        <ion-input type="number" class="custom-input" [(ngModel)]="propinaSeleccionada.cantidad_porcentaje"></ion-input>
+      </div>
+      <!--<div class="form-field">
+        <p class="field-label">$ Cantidad directa</p>
+        <ion-input type="number" class="custom-input" [(ngModel)]="propinaSeleccionada.cantidad_directa"></ion-input>
+      </div>-->
+    </div>
+
+    <div class="button-group">
+      <ion-button fill="clear" class="cancel-button" (click)="cancelarEdicionPropina()">Cancelar</ion-button>
+      <ion-button class="save-button" (click)="guardarPropina()">Guardar</ion-button>
+    </div>
+  </div>
+
+  <div *ngIf="!editandoPropina" class="table-container">
+
+    <table>
+      <thead>
+        <tr>
+          <th>Porcentaje (%)</th>
+          <!--<th>Cantidad directa</th>-->
+          <th>Acciones</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        <tr *ngFor="let p of propinas">
+          <td>{{ p.cantidad_porcentaje }}</td>
+         <!--<td>{{ p.cantidad_directa }}</td>--> 
+          <td class="action-icons">
+            <i class="pi pi-pencil edit-icon" (click)="editarPropinaUI(p)"></i>
+          </td>
+        </tr>
+      </tbody>
+
+    </table>
+  </div>
+
+</div>
+
 
   <div *ngIf="seccionActiva==='salir'">
     <h2>Salir de la aplicación</h2>

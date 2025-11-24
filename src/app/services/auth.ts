@@ -185,4 +185,25 @@ eliminarOrden(ordenId: number) {
 
 
 
+
+
+
+createComplemento(data: any) {
+  return this.http.post<any>(`${this.apiUrl}create-complemento.php`, data);
+}
+
+updateComplemento(data: any) {
+  return this.http.put<any>(`${this.apiUrl}update-complemento.php`, data);
+}
+
+deleteComplemento(id: number) {
+  return this.http.request<any>('DELETE', `${this.apiUrl}delete-complemento.php`, { body: { id } });
+}
+
+updatePropina(data: any) {
+  return this.http.put<any>(`${this.apiUrl}update-propina.php`, data);
+}
+
+
+
 }

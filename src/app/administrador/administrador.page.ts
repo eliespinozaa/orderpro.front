@@ -22,7 +22,7 @@ filtroProducto: string = '';
   empleadoSeleccionado: any = null;
   editandoEmpleado: boolean = false;
 
-  seccionActiva: 'productos' | 'empleados' | 'salir' = 'productos';
+  seccionActiva: 'productos' | 'empleados' | 'salir' | 'propinas' | 'complementos'  = 'productos';
 
   constructor(
     private authService: Auth,
@@ -46,14 +46,20 @@ filtroProducto: string = '';
     toast.present();
   }
 
-  seleccionarSeccion(seccion: 'productos' | 'empleados' | 'salir') {
-    this.seccionActiva = seccion;
-    this.cancelarEdicionProducto();
-    this.cancelarEdicionEmpleado();
+ seleccionarSeccion(seccion: 'productos' | 'empleados' | 'complementos' | 'propinas' | 'salir') {
+  this.seccionActiva = seccion;
 
-    if (seccion === 'productos') this.cargarProductos();
-    if (seccion === 'empleados') this.cargarEmpleados();
-  }
+  this.cancelarEdicionProducto();
+  this.cancelarEdicionEmpleado();
+  this.cancelarEdicionComplemento();
+  this.cancelarEdicionPropina();
+
+  if (seccion === 'productos') this.cargarProductos();
+  if (seccion === 'empleados') this.cargarEmpleados();
+  if (seccion === 'complementos') this.cargarComplementos();
+  if (seccion === 'propinas') this.cargarPropinas();
+}
+
 
 cargarProductos() {
   this.authService.getProductos().subscribe({
@@ -151,16 +157,36 @@ async cerrarSesion() {
     }
   }
 
-  eliminarProducto(id: number) {
-    if (!confirm('¿Deseas eliminar este producto?')) return;
-    this.authService.eliminarProducto(id).subscribe({
-      next: (res) => {
-        this.presentToast(res.message, 'success');
-        this.cargarProductos();
+  async eliminarProducto(id: number) {
+  const alert = await this.alertController.create({
+    header: 'Eliminar producto',
+    message: '¿Seguro que deseas eliminar este producto?',
+    cssClass: 'custom-alert',
+    buttons: [
+      {
+        text: 'Cancelar',
+        role: 'cancel',
+        cssClass: 'cancel-button'
       },
-      error: (err) => this.presentToast(err.message, 'danger'),
-    });
-  }
+      {
+        text: 'Eliminar',
+        cssClass: 'confirm-button',
+        handler: () => {
+          this.authService.eliminarProducto(id).subscribe({
+            next: (res) => {
+              this.presentToast(res.message, 'success');
+              this.cargarProductos();
+            },
+            error: (err) => this.presentToast(err.message, 'danger'),
+          });
+        }
+      }
+    ]
+  });
+
+  await alert.present();
+}
+
 
   empleadosFiltrados: any[] = [];
   filtro: string = '';
@@ -228,14 +254,171 @@ async cerrarSesion() {
     }
   }
 
-  eliminarEmpleado(id: number) {
-    if (!confirm('¿Deseas eliminar este empleado?')) return;
-    this.authService.deleteEmpleado(id).subscribe({
+ 
+
+async eliminarEmpleado(id: number) {
+  const alert = await this.alertController.create({
+    header: 'Eliminar empleado',
+    message: '¿Seguro que deseas eliminar este empleado?',
+    cssClass: 'custom-alert',
+    buttons: [
+      { text: 'Cancelar', role: 'cancel', cssClass: 'cancel-button' },
+      {
+        text: 'Eliminar',
+        cssClass: 'confirm-button',
+        handler: () => {
+          this.authService.deleteEmpleado(id).subscribe({
+            next: (res) => {
+              this.presentToast(res.message, 'success');
+              this.cargarEmpleados();
+            },
+            error: (err) => this.presentToast(err.message, 'danger'),
+          });
+        }
+      }
+    ]
+  });
+
+  await alert.present();
+}
+
+
+
+  // -------- Complementos --------
+complementos: any[] = [];
+complementosFiltrados: any[] = [];
+filtroComplemento: string = '';
+
+complementoSeleccionado: any = null;
+editandoComplemento: boolean = false;
+
+// -------- Propinas --------
+propinas: any[] = [];
+propinaSeleccionada: any = null;
+editandoPropina: boolean = false;
+
+
+
+
+cargarComplementos() {
+  this.authService.getComplementos().subscribe({
+    next: (res) => {
+      const data = Array.isArray(res) ? res : [];
+
+      this.complementos = data;
+      this.complementosFiltrados = data;
+    },
+    error: (err) => this.presentToast(err.message)
+  });
+}
+
+
+filtrarComplementos() {
+  const f = this.filtroComplemento.toLowerCase();
+  this.complementosFiltrados = this.complementos.filter(c =>
+    c.nombre.toLowerCase().includes(f)
+  );
+}
+
+nuevoComplementoUI() {
+  this.complementoSeleccionado = { nombre: '', precio: 0 };
+  this.editandoComplemento = true;
+}
+
+editarComplementoUI(c: any) {
+  this.complementoSeleccionado = { ...c };
+  this.editandoComplemento = true;
+}
+
+cancelarEdicionComplemento() {
+  this.complementoSeleccionado = null;
+  this.editandoComplemento = false;
+}
+
+guardarComplemento() {
+  if (this.complementoSeleccionado.id) {
+    this.authService.updateComplemento(this.complementoSeleccionado).subscribe({
       next: (res) => {
         this.presentToast(res.message, 'success');
-        this.cargarEmpleados();
+        this.cargarComplementos();
+        this.cancelarEdicionComplemento();
       },
-      error: (err) => this.presentToast(err.message, 'danger'),
+      error: (err) => this.presentToast(err.message)
+    });
+  } else {
+    this.authService.createComplemento(this.complementoSeleccionado).subscribe({
+      next: (res) => {
+        this.presentToast(res.message, 'success');
+        this.cargarComplementos();
+        this.cancelarEdicionComplemento();
+      },
+      error: (err) => this.presentToast(err.message)
     });
   }
+}
+
+
+
+async eliminarComplemento(id: number) {
+  const alert = await this.alertController.create({
+    cssClass: 'custom-alert',
+    header: 'Eliminar complemento',
+    message: '¿Deseas eliminar este complemento?',
+    buttons: [
+      {
+        text: 'Cancelar',
+        role: 'cancel',
+        cssClass: 'cancel-button',
+      },
+      {
+        text: 'Eliminar',
+        cssClass: 'confirm-button',
+        handler: () => {
+          this.authService.deleteComplemento(id).subscribe({
+            next: (res) => {
+              this.presentToast(res.message, 'success');
+              this.cargarComplementos();
+            },
+            error: (err) => this.presentToast(err.message, 'danger'),
+          });
+        },
+      },
+    ],
+  });
+
+  await alert.present();
+}
+
+
+
+
+cargarPropinas() {
+  this.authService.getPropinas().subscribe({
+    next: res => this.propinas = res,
+    error: err => this.presentToast(err.message)
+  });
+}
+
+editarPropinaUI(p: any) {
+  this.propinaSeleccionada = { ...p };
+  this.editandoPropina = true;
+}
+
+cancelarEdicionPropina() {
+  this.propinaSeleccionada = null;
+  this.editandoPropina = false;
+}
+
+guardarPropina() {
+  this.authService.updatePropina(this.propinaSeleccionada).subscribe({
+    next: res => {
+      this.presentToast(res.message, 'success');
+      this.cargarPropinas();
+      this.cancelarEdicionPropina();
+    },
+    error: err => this.presentToast(err.message)
+  });
+}
+
+
 }
