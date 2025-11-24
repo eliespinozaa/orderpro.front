@@ -416,7 +416,6 @@ addProductToOrder(product: any) {
     this.orderItems[index].price =
       (this.orderItems[index].unitPrice + compTotal) * this.orderItems[index].quantity;
   } else {
-    // Nuevo producto
     this.orderItems.push({
       id: product.id,
       name: product.nombre,

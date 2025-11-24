@@ -111,7 +111,6 @@
   </thead>
   <tbody>
 
-    <!-- Productos originales -->
     <ng-container *ngFor="let item of orderItems; let i = index">
       <tr *ngIf="!item.isExtra" [class.highlight-row]="i % 2 === 1">
         <td>
@@ -133,7 +132,6 @@
       </tr>
     </ng-container>
 
-    <!-- Separador para extras -->
    <tr *ngIf="hasExtras">
 
       <td colspan="5" style="text-align: center; font-weight: bold; color: green;">
@@ -189,7 +187,6 @@
   </div>
 </div>
 
-<!-- SECCIÓN DETALLE DE PAGO -->
 
 
     
