@@ -488,6 +488,8 @@ showPaymentDetails(orden: any) {
     next: (fullOrder: any) => {
 
       const items = Array.isArray(fullOrder?.items) ? fullOrder.items : [];
+this.paymentReceived = 0;
+this.change = 0;
 
       this.currentPaymentOrder = {
         id: fullOrder.id,
@@ -538,15 +540,27 @@ updateTip(value: number) {
   this.calculatePaymentTotal();
 }
 
+
 finishPayment() {
   if (!this.currentPaymentOrder) return;
 
+  const total = this.currentPaymentOrder.totalAmount;
+
+  if (this.paymentReceived < total) {
+    this.presentToast("El pago es insuficiente", "danger");
+    return;
+  }
+
   this.finalizarOrden(this.currentPaymentOrder);
+
   this.currentPaymentOrder = null;
-  this.always=true
-this.cargarOrdenes();
+  this.paymentReceived = 0;
+  this.change = 0;
+  this.always = true;
+  this.cargarOrdenes();
   this.mostrarDetallePago = false;
 }
+
 canceled(){
   this.mostrarDetallePago=false
    this.always = true
@@ -554,5 +568,29 @@ canceled(){
    this.showmenu= false;
 }
 
+
+
+
+paymentReceived: number = 0;
+change: number = 0;
+
+
+calculateChange() {
+  if (!this.currentPaymentOrder || !this.paymentReceived) {
+    this.change = 0;
+    return;
+  }
+
+  const total = Number(this.currentPaymentOrder.totalAmount);
+
+  this.change = this.paymentReceived - total;
+
+  // Evita que salga cambio negativo
+  if (this.change < 0) {
+    this.change = 0;
+  }
+
+  this.change = parseFloat(this.change.toFixed(2));
+}
 
   }

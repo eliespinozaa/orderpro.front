@@ -206,7 +206,7 @@
   <div class="header">
     <h1>Resumen de Órdenes</h1>
   </div>
-
+<div class="table-wrapper">
   <table class="order-table">
     <thead>
       <tr>
@@ -245,6 +245,7 @@
       </tr>
     </tbody>
   </table>
+  </div>
   <div class="save-button-container">
    <button class="save-button" (click)="backToMenu()">Volver</button>
      
@@ -306,6 +307,23 @@
       <ion-item lines="none" class="ion-text-end ion-padding" color="light">
         <strong>Total a pagar: ${{ currentPaymentOrder.totalAmount }}</strong>
       </ion-item>
+
+      <ion-item color="light">
+  <ion-label position="stacked">Cantidad recibida</ion-label>
+  <ion-input 
+    type="number" 
+    [(ngModel)]="paymentReceived" 
+    (ionInput)="calculateChange()"
+    placeholder="Ingrese con cuánto paga el cliente">
+  </ion-input>
+</ion-item>
+
+<ion-item color="light">
+  <ion-label class="ion-text-end">
+    Cambio: <strong>${{ change }}</strong>
+  </ion-label>
+</ion-item>
+
 
       <ion-row class="ion-justify-content-center ion-padding">
         <ion-col size="6" size-sm="4">
