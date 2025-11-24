@@ -551,7 +551,7 @@ export class HomePage implements OnInit {
     }
 
     this.finalizarOrden(this.currentPaymentOrder);
-
+    this.cargarOrdenes();
     this.currentPaymentOrder = null;
     this.paymentReceived = 0;
     this.change = 0;
