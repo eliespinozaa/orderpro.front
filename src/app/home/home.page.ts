@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Auth } from '../services/auth'; 
 import { Router } from '@angular/router';
 import { AlertController, ModalController, ToastController } from '@ionic/angular';
+import { Observable } from 'rxjs';
 
 interface OrderItem {
   id: number;            
@@ -46,6 +47,8 @@ export class HomePage implements OnInit {
   paymentReceived: number = 0;
   change: number = 0;
   seccionActiva: 'productos' | 'salir' | 'resumen' = 'productos';
+ mesas: any[] = [];
+
 
   constructor(
     private authService: Auth,
@@ -64,7 +67,22 @@ export class HomePage implements OnInit {
     this.cargarProductos();
     this.cargarPropinas();
     this.loadComplementos();
+     this.cargarMesas();
   }
+
+  
+mesasLibres: any[] = [];
+
+cargarMesas() {
+  this.authService.getMesas().subscribe({
+    next: (data) => {
+      this.mesas = data;
+      this.mesasLibres = this.mesas.filter(m => m.estatus === 'Libre');
+    },
+    error: (err) => console.error('Error al cargar mesas', err)
+  });
+}
+
 
   cargarProductos() {
     this.authService.getProductos().subscribe({
@@ -74,6 +92,21 @@ export class HomePage implements OnInit {
       error: (err) => console.error('Error al cargar productos', err)
     });
   }
+
+cancelarOrden(orden: any) {
+  console.log(orden,"isdodoffjdksdfjdnkdfgkm")
+  this.authService.cancelarOrden(orden.id).subscribe({
+    next: (res: any) => {
+      this.cargarMesas();
+      this.cargarOrdenes(); // recargas la tabla
+    },
+    error: err => {
+      console.error('Error al cancelar', err);
+    }
+  });
+}
+
+
 
   async agregarComplementos(index: number) {
     const item = this.orderItems[index];
@@ -272,6 +305,7 @@ export class HomePage implements OnInit {
         this.isNewOrder = true;
         this.currentOrderId = null;
         this.hasExtras = false;
+        this.cargarMesas();
       },
       error: (err) => {
         console.error("Error al guardar la orden", err);
@@ -307,7 +341,12 @@ export class HomePage implements OnInit {
       error: (err) => console.error('Error al cargar órdenes', err)
     });
   }
-
+cargarOrdenes2(): Observable<any[]> {
+  return this.authService.getOrdenes();
+}
+cargarMesas2(): Observable<any[]> {
+  return this.authService.getMesas();
+}
   finalizarOrden(orden: any) {
     this.authService.finalizarOrden(orden.id).subscribe({
       next: () => {
@@ -412,7 +451,7 @@ export class HomePage implements OnInit {
     this.showmenu = false;
     this.seccionActiva = 'productos';
     this.clientName = orden.client;
-    this.tableNumber = orden.mesa;
+    this.tableNumber = orden.mesaId;
     this.tip = Number(orden.tip) || 0;
 
     this.orderItems = orden.items.map((i: any) => {
@@ -539,26 +578,64 @@ export class HomePage implements OnInit {
     this.currentPaymentOrder.tip = value;
     this.calculatePaymentTotal();
   }
+  finalizarOrden2(orden: any) {
+  return this.authService.finalizarOrden(orden.id);
+}
 
-  finishPayment() {
-    if (!this.currentPaymentOrder) return;
 
-    const total = this.currentPaymentOrder.totalAmount;
+finishPayment() {
+  if (!this.currentPaymentOrder) return;
 
-    if (this.paymentReceived < total) {
-      this.presentToast("El pago es insuficiente", "danger");
-      return;
-    }
+  const total = this.currentPaymentOrder.totalAmount;
 
-    this.finalizarOrden(this.currentPaymentOrder);
-    this.cargarOrdenes();
+  if (this.paymentReceived < total) {
+    this.presentToast("El pago es insuficiente", "danger");
+    return;
+  }
+
+  this.finalizarOrden2(this.currentPaymentOrder).subscribe(() => {
+
+    this.cargarOrdenes2().subscribe((ordenes) => {
+      this.ordenes = ordenes;  
+    });
+
+    this.cargarMesas2().subscribe((mesas) => {
+       this.mesas = mesas;
+      this.mesasLibres = this.mesas.filter(m => m.estatus === 'Libre');
+    });
+
     this.currentPaymentOrder = null;
     this.paymentReceived = 0;
     this.change = 0;
     this.always = true;
-    this.cargarOrdenes();
     this.mostrarDetallePago = false;
+  });
+}
+
+get mesasDisponibles() {
+  if (!this.tableNumber) {
+    return this.mesas.filter(m => m.estatus === 'Libre');
   }
+
+  return this.mesas.filter(m =>
+    m.estatus === 'Libre' || m.id == this.tableNumber
+  );
+}
+
+
+getStatusClass(status: string) {
+  switch (status) {
+    case 'En proceso':
+      return 'status-proceso';
+    case 'Finalizada':
+      return 'status-finalizada';
+    case 'Cancelada':
+      return 'status-cancelada';
+    default:
+      return 'status-default';
+  }
+}
+
 
   canceled() {
     this.mostrarDetallePago = false;

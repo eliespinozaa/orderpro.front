@@ -19,7 +19,7 @@
   <div *ngIf="seccionActiva==='productos'">
 
 <div class="welcome-header" *ngIf="showmenu">
-    <h1>Bienvenido</h1>
+    <h1>Bienvenido {{userName}}</h1>
   </div>
 
   <ion-grid *ngIf="showmenu">
@@ -35,11 +35,11 @@
         </div>
       </ion-col>
 
-      <ion-col size="6" size-md="4" class="ion-padding">
+      <!--<ion-col size="6" size-md="4" class="ion-padding">
         <div class="action-card" (click)="endDay()">
           Finalizar día
         </div>
-      </ion-col>
+      </ion-col>-->
      <!-- <ion-col size="6" size-md="4" class="ion-padding">
         <div class="action-card" (click)="endDay()">
           Finalizar día
@@ -64,12 +64,21 @@
     <input type="text" placeholder="Escribe el nombre" [(ngModel)]="clientName">
   </div>
 </ion-col>
+
 <ion-col size="6">
   <label>Mesa</label>
-  <div class="input-container">
-    <input type="text" placeholder="Ej: 5" [(ngModel)]="tableNumber">
-  </div>
+  <ion-item>
+  <ion-select [(ngModel)]="tableNumber" placeholder="Selecciona una mesa">
+  <ion-select-option *ngFor="let mesa of mesasDisponibles" [value]="mesa.id">
+    {{ mesa.nombre }}
+  </ion-select-option>
+</ion-select>
+
+  </ion-item>
 </ion-col>
+
+
+
 
       </ion-row>
     </ion-grid>
@@ -218,24 +227,40 @@
       <tr *ngFor="let orden of ordenes; let i = index" [class.highlight-row]="i % 2 === 1">
         <td>{{ orden.nombre_orden }}</td>
         <td>{{ orden.mesa }}</td>
-        <td>{{ orden.estatus }}</td>
+        <td>
+  <span class="status-badge" [ngClass]="getStatusClass(orden.estatus)">
+    {{ orden.estatus }}
+  </span>
+</td>
+
         <td>${{ orden.total }}</td>
      <td class="actions-cell">
+      <ion-button 
+  *ngIf="orden.estatus !== 'Finalizada' && orden.estatus !== 'Cancelada'" 
+  fill="outline" 
+  size="small" 
+  color="danger"
+  (click)="cancelarOrden(orden)"
+>
+  <ion-icon slot="start" name="close-circle-outline"></ion-icon>
+  Cancelar
+</ion-button>
+
   <ion-button *ngIf="orden.estatus === 'En proceso'" fill="outline" size="small" color="primary" (click)="verDetalle(orden)">
     <ion-icon slot="start" name="eye-outline"></ion-icon>
     Extras
   </ion-button>
 
- <ion-button *ngIf="orden.estatus !== 'Finalizada'" fill="outline" size="small" color="success" (click)="showPaymentDetails(orden)">
+ <ion-button *ngIf="orden.estatus !== 'Finalizada' && orden.estatus !== 'Cancelada'" fill="outline" size="small" color="success" (click)="showPaymentDetails(orden)">
   <ion-icon slot="start" name="checkmark-circle-outline"></ion-icon>
   Cobrar
 </ion-button>
 
 
-  <ion-button *ngIf="orden.estatus === 'Finalizada'" fill="outline" size="small" color="danger" (click)="eliminarOrden(orden)">
+  <!--<ion-button *ngIf="orden.estatus === 'Finalizada'" fill="outline" size="small" color="danger" (click)="eliminarOrden(orden)">
     <ion-icon slot="start" name="trash-outline"></ion-icon>
     Eliminar
-  </ion-button>
+  </ion-button>-->
 </td>
 
 

@@ -205,5 +205,23 @@ updatePropina(data: any) {
 }
 
 
+getMesas(): Observable<any[]> {
+  return this.http.get<any[]>(`${this.apiUrl}mesas.php`).pipe(
+    map((response: any[]) => response),
+    catchError(err =>
+      throwError(() => new Error(err.error?.error || err.message || 'Error al obtener mesas'))
+    )
+  );
+}
+
+cancelarOrden(ordenId: number): Observable<any> {
+  return this.http.post<any>(`${this.apiUrl}cancelar_orden.php`, { orden_id: ordenId }).pipe(
+    map(res => res),
+    catchError(err =>
+      throwError(() => new Error(err.error?.error || err.message || 'Error al cancelar la orden'))
+    )
+  );
+}
+
 
 }
