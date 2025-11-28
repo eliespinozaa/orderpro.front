@@ -874,3 +874,34 @@ label {
   padding: 8px 16px;
   border-radius: 6px;
 }
+
+
+
+.status-badge {
+  padding: 6px 12px;
+  border-radius: 14px;
+  font-weight: bold;
+  color: white;
+  display: inline-block;
+  font-size: 13px;
+  text-align: center;
+}
+
+.status-proceso {
+  background-color: #f1c40f; 
+  color: #000;
+}
+
+.status-finalizada {
+  background-color: #2ecc71; 
+}
+
+
+.status-cancelada {
+  background-color: #e74c3c; 
+}
+
+
+.status-default {
+  background-color: #95a5a6; 
+}
