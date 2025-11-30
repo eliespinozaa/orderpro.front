@@ -550,7 +550,7 @@ cargarMesas2(): Observable<any[]> {
         this.currentPaymentOrder = {
           id: fullOrder.id,
           client: fullOrder?.client ?? 'Sin nombre',
-          table: fullOrder?.mesa ?? 'Sin mesa',
+          table: fullOrder?.mesaNombre ?? 'Sin mesa',
           items: processedItems,
           tip: tip,
           totalAmount: parseFloat(total.toFixed(2))
