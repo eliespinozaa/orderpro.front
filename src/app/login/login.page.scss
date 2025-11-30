@@ -1,5 +1,18 @@
+// Variables de color (mismas del sistema)
+$color-amarillo-primary: #F4C430;
+$color-amarillo-dark: #DAA520;
+$color-amarillo-light: #FFD700;
+$color-amarillo-soft: #FFF9E6;
+$color-blanco: #FFFFFF;
+$color-gris-texto: #333333;
+$color-gris-claro: #F8F8F8;
+$color-border: #E8E8E8;
+$sombra-suave: 0 2px 8px rgba(244, 196, 48, 0.1);
+$sombra-media: 0 4px 12px rgba(244, 196, 48, 0.15);
+$sombra-fuerte: 0 6px 20px rgba(244, 196, 48, 0.2);
+
 .login-background {
-  --background: #f6f6f6; 
+  --background: #{$color-gris-claro}; 
   display: flex;
   justify-content: center;
   align-items: center; 
@@ -7,6 +20,7 @@
   padding: 20px;
   box-sizing: border-box;
 }
+
 .login-center {
   display: flex;
   justify-content: center;
@@ -14,19 +28,13 @@
   height: 100vh;          
 }
 
-.login-background {
-  --background: #f6f6f6;
-  --padding-top: 0;    
-  --padding-bottom: 0; 
-}
-
 .login-card {
-  background: white;
+  background: $color-blanco;
   width: 100%;
   max-width: 500px; 
   padding: 2rem;
   border-radius: 20px;
-  box-shadow: 0 4px 25px rgba(0, 0, 0, 0.1);
+  box-shadow: $sombra-fuerte;
   text-align: center;
   margin: 0 auto;
   box-sizing: border-box;
@@ -34,7 +42,7 @@
 
 /* Títulos */
 .login-title {
-  color: #757272;
+  color: $color-gris-texto;
   font-size: 20px;
   margin-bottom: 10px;
 }
@@ -44,36 +52,48 @@
 }
 
 .order {
-  color: #d9d20c;
+  color: $color-amarillo-primary;
   font-weight: bold;
   font-size: 32px;
 }
 
 .pro {
-  color: #d9d20c;
+  color: $color-amarillo-primary;
   font-size: 28px;
   font-weight: 600;
 }
 
 .login-btn {
-  --background: #d9d20c;
+  --background: linear-gradient(135deg, #{$color-amarillo-primary}, #{$color-amarillo-light});
+  --background-activated: #{$color-amarillo-dark};
+  --background-hover: #{$color-amarillo-dark};
   margin-top: 15px;
   border-radius: 10px;
+  font-weight: 600;
+  box-shadow: $sombra-media;
+  transition: all 0.3s ease;
+
+  &:active {
+    transform: scale(0.98);
+    box-shadow: $sombra-suave;
+  }
 }
 
 .switch-btn {
-  color: #d9d20c;
+  color: $color-amarillo-primary;
   margin-top: 5px;
+  font-weight: 600;
 }
 
 .input-group {
   display: flex;
   align-items: center;
-  background: #f7fbd9;
+  background: $color-amarillo-soft;
   border-radius: 12px;
   padding: 0.5rem 0.8rem;
   margin-bottom: 15px;
   transition: all 0.3s ease;
+  border: 2px solid transparent;
 }
 
 .input-group ion-icon {
@@ -84,18 +104,17 @@
 
 .input-group ion-input {
   flex: 1;
-  color: #333;
+  color: $color-gris-texto;
   --padding-start: 0;
   --padding-end: 0;
   --background: transparent;
 }
 
 .input-group:focus-within {
-  background: #fff;
-  box-shadow: 0 0 0 2px #f7fbd9;
+  background: $color-blanco;
+  border-color: $color-amarillo-primary;
+  box-shadow: 0 0 0 3px rgba(244, 196, 48, 0.1);
 }
-
-
 
 @media (max-width: 768px) {
   .login-card {
