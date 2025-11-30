@@ -108,7 +108,8 @@
 <div class="order-detail-box">
   <h2>Detalle del pedido</h2>
   
-<table class="order-table">
+  <div class="table-wrapper">
+    <table class="order-table">
   <thead>
     <tr>
       <th class="col-nombre">Nombre</th>
@@ -173,6 +174,7 @@
   </tbody>
 </table>
 
+  </div> <!-- Cierra table-wrapper -->
 
   <div class="totals-area">
     <div class="total-row"  *ngIf="mostrarPropina">
@@ -349,7 +351,7 @@
 
       <ion-row class="ion-justify-content-center ion-padding">
         <ion-col size="6" size-sm="4">
-          <ion-button expand="block" color="success" (click)="finishPayment()">Pagar</ion-button>
+          <ion-button expand="block" class="colorpag " (click)="finishPayment()">Pagar</ion-button>
         </ion-col>
         <ion-col size="6" size-sm="4">
           <ion-button expand="block" color="medium" (click)="canceled()">Cancelar</ion-button>
