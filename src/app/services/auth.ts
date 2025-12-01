@@ -7,7 +7,7 @@ import { Router } from '@angular/router';
   providedIn: 'root'
 })
 export class Auth {
-  private apiUrl = 'http://localhost:8081/ServOrderPro/';
+  private apiUrl = 'http://localhost:8080/backendorderpro/';
 
   constructor(private http: HttpClient, private router: Router) {}
 
@@ -106,7 +106,8 @@ getRole(): string | null {
         nombre: p.nombre,
         precio: Number(p.precio),
         unidad_medida: p.unidad_medida,
-        tamano: p.tamaño
+        tamano: p.tamaño,
+        descripcion: p.descripcion
       }))
     ),
     catchError(err => throwError(() => new Error(err.message || 'Error al obtener productos')))
@@ -221,6 +222,32 @@ cancelarOrden(ordenId: number): Observable<any> {
       throwError(() => new Error(err.error?.error || err.message || 'Error al cancelar la orden'))
     )
   );
+}
+
+
+getReporteDelDia(): Observable<any> {
+  // Ajuste seguro de fecha local (evita desfases por timezone)
+  const hoy = new Date();
+  hoy.setMinutes(hoy.getMinutes() - hoy.getTimezoneOffset());
+
+  const fecha = hoy.toISOString().split('T')[0];
+
+  return this.http.get<any>(`${this.apiUrl}historial-dia.php?fecha=${fecha}`).pipe(
+    catchError(err =>
+      throwError(() => new Error(err.error?.error || err.message || 'Error al obtener el reporte del día'))
+    )
+  );
+}
+
+
+descargarReportePDF(): Observable<Blob> {
+  const hoy = new Date();
+  hoy.setMinutes(hoy.getMinutes() - hoy.getTimezoneOffset());
+  const fecha = hoy.toISOString().split('T')[0];
+
+  return this.http.get(`${this.apiUrl}reporte-dia-pdf.php?fecha=${fecha}`, {
+    responseType: 'blob'
+  });
 }
 
 
