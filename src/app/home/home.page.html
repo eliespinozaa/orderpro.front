@@ -70,17 +70,20 @@
   </div>
 </ion-col>
 
+
 <ion-col size="6">
   <label>Mesa</label>
-  <ion-item>
-  <ion-select [(ngModel)]="tableNumber" placeholder="Selecciona una mesa">
-  <ion-select-option *ngFor="let mesa of mesasDisponibles" [value]="mesa.id">
-    {{ mesa.nombre }}
-  </ion-select-option>
-</ion-select>
-
-  </ion-item>
+  <div class="mesas-grid">
+    <div 
+      class="mesa-card" 
+      *ngFor="let mesa of mesasDisponibles" 
+      [class.selected]="tableNumber === mesa.id"
+      (click)="selectMesa(mesa.id)">
+      {{ mesa.nombre }}
+    </div>
+  </div>
 </ion-col>
+
 
 
 

@@ -965,3 +965,41 @@ ion-col {
     }
   }
 }
+
+
+.mesas-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.mesa-card {
+  padding: 12px 16px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  text-align: center;
+  cursor: pointer;
+  transition: 0.2s;
+background: $color-blanco;
+  border: 2px solid $color-amarillo-primary;
+  border-radius: 10px;
+  text-align: center;
+  font-size: 0.75rem;
+  color: $color-gris-texto;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: $sombra-suave;
+  
+}
+
+.mesa-card:hover {
+  background-color: #e0e0e0;
+  
+}
+
+.mesa-card.selected {
+  background-color: #F4C430;
+  color: white;
+  font-weight: bold;
+  border-color: #F4C430;
+}

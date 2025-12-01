@@ -702,4 +702,9 @@ descargarPDF() {
   });
 }
 
+selectMesa(id: string) {
+  this.tableNumber = id;
+}
+
+
 }
