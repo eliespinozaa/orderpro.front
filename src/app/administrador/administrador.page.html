@@ -29,6 +29,16 @@
           <ion-input type="text" class="custom-input" [(ngModel)]="productoSeleccionado.nombre"></ion-input>
         </div>
         <div class="form-field">
+  <p class="field-label">Descripción</p>
+ <ion-textarea
+  class="custom-input"
+  [(ngModel)]="productoSeleccionado.descripcion"
+  placeholder="Escribe una descripción...">
+</ion-textarea>
+
+</div>
+
+        <div class="form-field">
           <p class="field-label">Precio</p>
           <ion-input type="number" class="custom-input" [(ngModel)]="productoSeleccionado.precio"></ion-input>
         </div>
@@ -67,6 +77,7 @@
         <thead>
           <tr>
             <th>Nombre</th>
+            <th>Descripción</th>
             <th>Precio</th>
             <th>Und. Medida</th>
             <th>Tamaño</th>
@@ -76,6 +87,7 @@
         <tbody>
           <tr *ngFor="let p of productosFiltrados">
             <td>{{ p.nombre }}</td>
+            <td>{{ p.descripcion }}</td>
             <td>{{ p.precio | currency:'MXN' }}</td>
             <td>{{ p.unidad_medida }}</td>
             <td>{{ p.tamano }}</td>

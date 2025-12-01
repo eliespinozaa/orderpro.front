@@ -46,7 +46,7 @@ export class HomePage implements OnInit {
   mostrarDetallePago: boolean = false;
   paymentReceived: number = 0;
   change: number = 0;
-  seccionActiva: 'productos' | 'salir' | 'resumen' = 'productos';
+  seccionActiva: 'productos' | 'salir' | 'resumen' | 'historial' = 'productos';
  mesas: any[] = [];
 
 
@@ -172,9 +172,25 @@ cancelarOrden(orden: any) {
     toast.present();
   }
 
-  seleccionarSeccion(seccion: 'productos' | 'salir') {
-    this.seccionActiva = seccion;
+ seleccionarSeccion(seccion: 'productos' | 'resumen' | 'salir' | 'historial') {
+  this.seccionActiva = seccion;
+
+  if (seccion === 'historial') {
+    this.showmenu = false;
+    this.always = true;
+    this.cargarHistorial();
   }
+
+  if (seccion === 'productos' || seccion === 'resumen') {
+    this.showmenu = false;
+    this.always = true;
+  }
+
+  if (seccion === 'salir') {
+    this.showmenu = false;
+  }
+}
+
 
   async cerrarSesion() {
     const alert = await this.alertController.create({
@@ -659,4 +675,31 @@ getStatusClass(status: string) {
 
     this.change = parseFloat(this.change.toFixed(2));
   }
+
+  historial: any[] = [];
+
+  cargarHistorial() {
+  this.authService.getReporteDelDia().subscribe({
+    next: (data) => {
+      this.historial = data;
+    },
+    error: (err) => console.error(err)
+  });
+}
+
+
+descargarPDF() {
+  this.authService.descargarReportePDF().subscribe({
+    next: (blob) => {
+      const url = window.URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = 'reporte_del_dia.pdf';
+      link.click();
+      window.URL.revokeObjectURL(url);
+    },
+    error: (err) => console.error(err)
+  });
+}
+
 }

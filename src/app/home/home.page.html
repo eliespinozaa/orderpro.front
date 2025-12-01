@@ -34,6 +34,11 @@
           Resumen de órdenes
         </div>
       </ion-col>
+      <ion-col size="6" size-md="4" class="ion-padding">
+        <div class="action-card" (click)="seleccionarSeccion('historial')">
+  Historial del día
+</div>
+      </ion-col>
 
       <!--<ion-col size="6" size-md="4" class="ion-padding">
         <div class="action-card" (click)="endDay()">
@@ -88,6 +93,8 @@
   <div class="product-cards-container">
    <div class="product-card dynamic-product" *ngFor="let producto of productos">
   {{ producto.nombre }}
+  <br>
+  <span style="font-size: 11px; color: #666; display: block; margin-top: 4px;">{{ producto.descripcion }}</span>
   <br>
   ${{ producto.precio }}
   <ion-icon  
@@ -275,6 +282,51 @@
      
     </div>
 </div>
+
+<div class="main-container" *ngIf="seccionActiva==='historial' && always">
+  <div class="header">
+    <h1>Historial del día</h1>
+
+      <div class="save-button-container">
+    <button class="save-button" (click)="descargarPDF()">Descargar reporte</button>
+
+  </div>
+
+  </div>
+
+  <div class="table-wrapper">
+    <table class="order-table">
+      <thead>
+        <tr>
+          <th>Hora</th>
+          <th>Cliente</th>
+          <th>Mesa</th>
+          <th>Total</th>
+          <th>Estatus</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        <tr *ngFor="let h of historial; let i = index" [class.highlight-row]="i % 2 === 1">
+          <td>{{ h.fecha | date:'shortTime' }}</td>
+          <td>{{ h.nombre_orden }}</td>
+          <td>{{ h.mesa }}</td>
+          <td>${{ h.total }}</td>
+          <td>
+            <span class="status-badge" [ngClass]="getStatusClass(h.estatus)">
+              {{ h.estatus }}
+            </span>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="save-button-container">
+    <button class="save-button" (click)="backToMenu()">Volver</button>
+  </div>
+</div>
+
 
   <div *ngIf="seccionActiva==='salir'">
     <h2>Salir de la aplicación</h2>

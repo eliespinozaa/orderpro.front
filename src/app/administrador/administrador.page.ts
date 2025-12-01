@@ -119,6 +119,7 @@ async cerrarSesion() {
       precio: 0,
       unidad_medida: '',
       tamano: '',
+      descripcion: ''
     };
     this.editandoProducto = true;
   }
