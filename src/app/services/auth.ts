@@ -7,8 +7,8 @@ import { Router } from '@angular/router';
   providedIn: 'root'
 })
 export class Auth {
-  private apiUrl = 'http://localhost:8080/backendorderpro/';
-
+  //private apiUrl = 'http://localhost:8080/backendorderpro/';
+  private apiUrl = 'http://orderpro.duckdns.org/';
   constructor(private http: HttpClient, private router: Router) {}
 
  loginAdmin(correo: string, contrasena: string): Observable<any> {

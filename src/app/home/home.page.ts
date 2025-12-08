@@ -1,8 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { Auth } from '../services/auth'; 
 import { Router } from '@angular/router';
-import { AlertController, ModalController, ToastController } from '@ionic/angular';
+import { AlertController, ModalController, Platform, ToastController } from '@ionic/angular';
 import { Observable } from 'rxjs';
+import { Filesystem, Directory } from '@capacitor/filesystem';
 
 interface OrderItem {
   id: number;            
@@ -55,7 +56,8 @@ export class HomePage implements OnInit {
     private router: Router,
     private toastController: ToastController,
     private alertController: AlertController,
-    private modalCtrl: ModalController
+    private modalCtrl: ModalController,
+      private platform: Platform
   ) {}
 
   ngOnInit() {
@@ -688,17 +690,39 @@ getStatusClass(status: string) {
 }
 
 
-descargarPDF() {
+async descargarPDF() {
   this.authService.descargarReportePDF().subscribe({
-    next: (blob) => {
-      const url = window.URL.createObjectURL(blob);
-      const link = document.createElement('a');
-      link.href = url;
-      link.download = 'reporte_del_dia.pdf';
-      link.click();
-      window.URL.revokeObjectURL(url);
+    next: async (blob) => {
+      try {
+        // Convierte el blob a base64
+        const reader = new FileReader();
+        reader.readAsDataURL(blob);
+        
+        reader.onloadend = async () => {
+          const base64Data = reader.result as string;
+          const base64 = base64Data.split(',')[1]; // Quita el prefijo data:application/pdf;base64,
+          
+          const fileName = `reporte_${new Date().toISOString().split('T')[0]}.pdf`;
+          
+          // Guarda el archivo
+          const savedFile = await Filesystem.writeFile({
+            path: fileName,
+            data: base64,
+            directory: Directory.Documents,
+          });
+          
+          console.log('Archivo guardado en:', savedFile.uri);
+          this.presentToast(`PDF guardado en Documentos/${fileName}`, 'success');
+        };
+      } catch (error) {
+        console.error('Error al guardar PDF:', error);
+        this.presentToast('Error al guardar el PDF', 'danger');
+      }
     },
-    error: (err) => console.error(err)
+    error: (err) => {
+      console.error('Error al descargar PDF:', err);
+      this.presentToast('Error al descargar el PDF', 'danger');
+    }
   });
 }
 

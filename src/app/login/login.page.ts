@@ -53,7 +53,31 @@ export class LoginPage implements OnInit {
     });
     toast.present();
   }
-
+/*onLogin() {
+  if (this.loginForm.invalid) {
+    this.presentToast('Por favor llena todos los campos correctamente');
+    return;
+  }
+  
+  if (this.isAdmin) {
+    const { correo, contrasena } = this.loginForm.value;
+    
+    // TEMPORAL: Muestra lo que vas a enviar
+    alert(`Enviando: correo=${correo}, contraseña=${contrasena}`);
+    
+    this.authService.loginAdmin(correo, contrasena).subscribe({
+      next: (user) => {
+        this.presentToast(`Bienvenido ${user.full_name}`, 'success');
+        this.router.navigate(['/administrador']); 
+      },
+      error: (err) => {
+        // TEMPORAL: Muestra el error completo
+        alert(`Error: ${JSON.stringify(err)}`);
+        this.presentToast(err.message || 'Correo o contraseña incorrectos');
+      }
+    });
+  }
+}*/
 onLogin() {
   if (this.loginForm.invalid) {
     this.presentToast('Por favor llena todos los campos correctamente');
